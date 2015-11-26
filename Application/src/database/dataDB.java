@@ -219,6 +219,8 @@ public class dataDB {
       }
       return ploegen;
    }
+   
+   // debugged method
    public ArrayList<PersoonBag> zoekAlleTrainers() throws DBException, ApplicationException {
 
       ArrayList<PersoonBag> kl = new ArrayList<>();
@@ -263,7 +265,7 @@ public class dataDB {
    }
    
     
-   
+   // debugged method
    public ArrayList<PersoonBag> zoekAlleSpelers() throws DBException, ApplicationException {
 
       ArrayList<PersoonBag> kl = new ArrayList<>();
@@ -726,6 +728,7 @@ public class dataDB {
           // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
             "delete * from ploeg ");) {
+            
            
             
             stmt.execute();      
@@ -997,11 +1000,11 @@ public class dataDB {
             // execute voert elke sql-statement uit, executeQuery enkel de select
             stmt.execute();
          } catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in wijzigenKlant"+ sqlEx);
+            throw new DBException("SQL-exception in wijzigenPersoon(PersoonBag p) -sql statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
          throw new DBException(
-            "SQL-exception in wijzigenKlant - connection"+ sqlEx);
+            "SQL-exception in wijzigenPersoon(PersoonBag p) - connection"+ sqlEx);
       }
    }
    

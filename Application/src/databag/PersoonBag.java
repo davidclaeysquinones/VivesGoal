@@ -72,15 +72,20 @@ public class PersoonBag {
      */
 
     public void setGeboortedatum(int jaar,int maand,int dag) throws ApplicationException{
-        try {
-            Calendar c=Calendar.getInstance();
-            c.set(jaar,maand-1,dag);     
-            geboortedatum =new Date(c.getTimeInMillis()) ;
+       Date current = new Date(System.currentTimeMillis());
+       Calendar c=Calendar.getInstance();
+       c.add(Calendar.MILLISECOND,86400000);
+       c.set(jaar,maand-1,dag);   
+       Date d=new Date(c.getTimeInMillis()) ;
+        if(jaar>=0 && maand <=12 && maand>0 && dag<=31 && current.after(d))
+        {           
+            geboortedatum =d;
         }
-        catch(IllegalArgumentException e )
+        else
         {
             throw new ApplicationException("De opgegeven datum heeft een verkeerd formaat");
         }
+               
     }
 
     public void setTrainer(boolean trainer) {

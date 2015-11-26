@@ -29,8 +29,9 @@ public class DBfuntionsTest {
         } catch (ApplicationException ex) {
             System.out.println(ex.getMessage());
         }
-        een.setTrainer(false);
         System.out.println(een.getGeboortedatum());
+        een.setTrainer(false);
+      
         
         PersoonBag twee=new PersoonBag();
         twee.setVoornaam("Cristina");
@@ -114,7 +115,7 @@ public class DBfuntionsTest {
         
         try{
             database.toevoegenPloeg(ploeg);
-            System.out.println("naam :"+ploeg.getNaam()+" trainer : "+ploeg.getTrainer());
+            System.out.println("naam :"+ploeg.getNaam()+" trainerid : "+ploeg.getTrainer());
             System.out.println("ploeg toegevoegd");  
         }
         catch ( DBException e)
