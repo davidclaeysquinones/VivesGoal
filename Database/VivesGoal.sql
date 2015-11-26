@@ -1,4 +1,4 @@
-**sql script to create the necessary database**
+/*sql script to create the necessary database*/
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
