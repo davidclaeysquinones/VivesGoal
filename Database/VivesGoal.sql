@@ -1,4 +1,4 @@
-**sql script to create the necessary database**
+/*sql script to create the necessary database*/
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS `ploeg` (
 -- Tabelstructuur voor tabel `ploeg/persoon`
 --
 
-DROP TABLE IF EXISTS `ploeg/persoon`;
-CREATE TABLE IF NOT EXISTS `ploeg/persoon` (
+DROP TABLE IF EXISTS `ploegpersoon`;
+CREATE TABLE IF NOT EXISTS `ploegpersoon` (
   `ploeg` int(11) NOT NULL ,
   `speler` int(11) NOT NULL,
   PRIMARY KEY (`speler`)
