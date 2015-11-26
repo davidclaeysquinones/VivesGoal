@@ -472,7 +472,7 @@ public class dataDB {
       }
    }
    
-   
+//   debugged method
    public void verwijderPersoon(int id) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
@@ -486,7 +486,7 @@ public class dataDB {
             stmt.execute();
          }
           try (PreparedStatement stmt = conn.prepareStatement(
-            "update ploeg set trainer=null WHERE trainer=?");) {
+            "update ploeg set trainer=NULL WHERE trainer=?");) {
             stmt.setInt(1, id);
             // execute voert elke sql-statement uit, executeQuery enkel de select
             stmt.execute();
@@ -507,7 +507,7 @@ public class dataDB {
             "SQL-exception in verwijderPersoon(int id) - connection"+ sqlEx);
       }
    }
-   
+//   debugged method
    public void verwijderPersoon(String naam,String voornaam) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
@@ -522,7 +522,7 @@ public class dataDB {
             stmt.execute();
          }
           try (PreparedStatement stmt = conn.prepareStatement(
-            "update ploeg set trainer=null WHERE trainer in (select id from persoon where naam=? and voornaam=?)");) {
+            "update ploeg set trainer=NULL WHERE trainer in (select id from persoon where naam=? and voornaam=?)");) {
             stmt.setString(1, naam);
             stmt.setString(2, voornaam);
             // execute voert elke sql-statement uit, executeQuery enkel de select
@@ -544,7 +544,7 @@ public class dataDB {
             "SQL-exception in verwijderPersoon(String naam,String voornaam) - connection"+ sqlEx);
       }
    }
-   
+//   debugged method
    public void verwijderPersoon(PersoonBag p) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
@@ -559,13 +559,13 @@ public class dataDB {
             stmt.execute();
          }
           try (PreparedStatement stmt = conn.prepareStatement(
-            "update ploeg set trainer=null WHERE trainer=?");) {
+            "update ploeg set trainer=NULL WHERE trainer=?");) {
             stmt.setInt(1, p.getId());
             // execute voert elke sql-statement uit, executeQuery enkel de select
             stmt.execute();
           }
           try (PreparedStatement stmt = conn.prepareStatement(
-            "DELETE FROM persoon WHERE id=?);")) {
+            "DELETE FROM persoon WHERE id=?;")) {
             stmt.setInt(1, p.getId());
             // execute voert elke sql-statement uit, executeQuery enkel de select
             stmt.execute();
@@ -579,7 +579,7 @@ public class dataDB {
             "SQL-exception in verwijderPersoon(String naam,String voornaam) - connection"+ sqlEx);
       }
    }
-
+//   debugged method
    public void toevoegenPersoon(PersoonBag p) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
@@ -604,7 +604,7 @@ public class dataDB {
       }
 
    }
-   
+   //   debugged method
    public void toevoegenPloeg(PloegBag p) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
@@ -629,6 +629,89 @@ public class dataDB {
 
    }
 
+   public void verwijderPloeg(PloegBag p) throws DBException {
+
+      // connectie tot stand brengen (en automatisch sluiten)
+      try (Connection conn = ConnectionManager.getConnection();) {
+         // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.prepareStatement(
+            "delete from ploegpersoon where ploeg=?");) {
+            stmt.setInt(1, p.getId());      
+            stmt.execute();      
+         } 
+          // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.prepareStatement(
+            "delete from ploeg where id=?");) {
+            stmt.setInt(1, p.getId());
+           
+            
+            stmt.execute();      
+         }
+         catch (SQLException sqlEx) {
+            throw new DBException("SQL-exception in toevoegenPloeg(PloegBag p) - statement"+ sqlEx);
+         }
+      } catch (SQLException sqlEx) {
+         throw new DBException(
+            "SQL-exception in toevoegenPloeg(PloegBag p) - connection"+ sqlEx);
+      }
+
+   }
+   
+   public void verwijderPloeg(int ploegid) throws DBException {
+
+      // connectie tot stand brengen (en automatisch sluiten)
+      try (Connection conn = ConnectionManager.getConnection();) {
+         // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.prepareStatement(
+            "delete from ploegpersoon where ploeg=?");) {
+            stmt.setInt(1, ploegid);      
+            stmt.execute();      
+         } 
+          // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.prepareStatement(
+            "delete from ploeg where id=?");) {
+            stmt.setInt(1, ploegid);
+           
+            
+            stmt.execute();      
+         }
+         catch (SQLException sqlEx) {
+            throw new DBException("SQL-exception in toevoegenPloeg(PloegBag p) - statement"+ sqlEx);
+         }
+      } catch (SQLException sqlEx) {
+         throw new DBException(
+            "SQL-exception in toevoegenPloeg(PloegBag p) - connection"+ sqlEx);
+      }
+
+   }
+
+   public void verwijderPloeg(String naam) throws DBException {
+
+      // connectie tot stand brengen (en automatisch sluiten)
+      try (Connection conn = ConnectionManager.getConnection();) {
+         // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.prepareStatement(
+            "delete from ploegpersoon naam ploeg in (select id from ploeg where naam=?)");) {
+            stmt.setString(1, naam);      
+            stmt.execute();      
+         } 
+          // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.prepareStatement(
+            "delete from ploeg naam id=?");) {
+            stmt.setString(1, naam);
+           
+            
+            stmt.execute();      
+         }
+         catch (SQLException sqlEx) {
+            throw new DBException("SQL-exception in toevoegenPloeg(PloegBag p) - statement"+ sqlEx);
+         }
+      } catch (SQLException sqlEx) {
+         throw new DBException(
+            "SQL-exception in toevoegenPloeg(PloegBag p) - connection"+ sqlEx);
+      }
+
+   }
    public void toevoegenSpelerPloeg(int ploegid,PersoonBag p) throws DBException
    {
        // connectie tot stand brengen (en automatisch sluiten)

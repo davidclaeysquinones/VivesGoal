@@ -12,6 +12,8 @@ import java.util.Date;
 import databag.Categorie;
 import databag.PersoonBag;
 import databag.PloegBag;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,32 +22,51 @@ import databag.PloegBag;
 public class DBfuntionsTest {
     public static void main(String args[]) {
         
+       
+//       
         PersoonBag een=new PersoonBag();
 //        een.setId(1);
         een.setVoornaam("David");
         een.setNaam("Claeys");
-        een.setGeboortedatum(new Date(1995,4,13));
+        try {
+            een.setGeboortedatum(1995,4,13);
+        } catch (ApplicationException ex) {
+            System.out.println(ex.getMessage());
+        }
         een.setTrainer(false);
+        System.out.println(een.getGeboortedatum());
         
         PersoonBag twee=new PersoonBag();
 //        twee.setId(2);
         twee.setVoornaam("Cristina");
         twee.setNaam("Claeys");
-        twee.setGeboortedatum(new Date(1999,10,1));
+        try {
+            twee.setGeboortedatum(1999,10,1);
+        }  catch (ApplicationException ex) {
+            System.out.println(ex.getMessage());
+        }
         twee.setTrainer(false);
         
         PersoonBag drie=new PersoonBag();
 //        drie.setId(3);
         drie.setVoornaam("Papi");
         drie.setNaam("Chulo");
-        drie.setGeboortedatum(new Date(1989,8,1));
+        try {
+            drie.setGeboortedatum(1989,8,1);
+        } catch (ApplicationException ex) {
+            System.out.println(ex.getMessage());
+        }
         drie.setTrainer(true);
         
         PersoonBag vier=new PersoonBag();
 //        vier.setId(4);
         vier.setVoornaam("Mami");
         vier.setNaam("Chula");
-        vier.setGeboortedatum(new Date(1979,6,2));
+        try {
+            vier.setGeboortedatum(1979,6,2);
+        } catch (ApplicationException ex) {
+            System.out.println(ex.getMessage());
+        }
         vier.setTrainer(true);
         
         ArrayList speler=new ArrayList();
@@ -88,8 +109,11 @@ public class DBfuntionsTest {
         ploeg.setNaam("los papis");
         ploeg.setCategorie(Categorie.U6);
         try{
-            ploeg.setTrainer((database.zoekPersoon(drie.getNaam(),drie.getVoornaam())).getId());
-                  }
+            PersoonBag p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
+            ploeg.setTrainer(p.getId());
+            System.out.println("naam : "+p.getNaam()+" voornaam : "+p.getVoornaam()+" id : "+p.getId());
+                  
+        }
         catch ( DBException|ApplicationException e)
         {
             System.out.println("fout bij opzoeken trainer "+e.getMessage());
@@ -97,6 +121,7 @@ public class DBfuntionsTest {
         
         try{
             database.toevoegenPloeg(ploeg);
+            System.out.println("naam :"+ploeg.getNaam()+" trainer : "+ploeg.getTrainer());
             System.out.println("ploeg toegevoegd");  
         }
         catch ( DBException e)
@@ -131,7 +156,7 @@ public class DBfuntionsTest {
         {
             PersoonBag a = (PersoonBag) trainer.get(i);
             try{
-            database.verwijderPersoon(a.getId());
+            database.verwijderPersoon(a.getNaam(),a.getVoornaam());
         }
         catch(DBException   e1)
         {

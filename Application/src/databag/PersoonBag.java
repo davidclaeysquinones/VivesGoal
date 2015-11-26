@@ -6,6 +6,7 @@
 package databag;
 
 import exception.ApplicationException;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -63,7 +64,9 @@ public class PersoonBag {
     }
     public void setGeboortedatum(int jaar,int maand,int dag) throws ApplicationException{
         try {
-            this.geboortedatum = new Date(jaar,maand,dag);
+            Calendar c=Calendar.getInstance();
+            c.set(jaar,maand-1,dag);     
+            geboortedatum =new Date(c.getTimeInMillis()) ;
         }
         catch(IllegalArgumentException e )
         {

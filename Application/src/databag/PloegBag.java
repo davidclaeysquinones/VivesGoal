@@ -57,6 +57,6 @@ public class PloegBag {
      */
     public void setTrainer(int id) 
     {
-        this.id=id;
+        trainer=id;
     }
 }
