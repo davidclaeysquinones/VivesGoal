@@ -1,5 +1,5 @@
-[Wed Nov 25 07:51:22.226722 2015] [mpm_winnt:notice] [pid 8584:tid 692] AH00455: Apache/2.4.6 (Win32) PHP/5.4.17 configured -- resuming normal operations
-[Wed Nov 25 07:51:22.226722 2015] [mpm_winnt:notice] [pid 8584:tid 692] AH00456: Apache Lounge VC10 Server built: Jul 16 2013 11:15:41
-[Wed Nov 25 07:51:22.226722 2015] [core:notice] [pid 8584:tid 692] AH00094: Command line: 'C:\\Users\\david\\Documents\\2de jaar\\Programming - Practicum\\USBWebserver v8.6/apache2/bin/httpd_usbwv8.exe -d C:/Users/david/Documents/2de jaar/Programming - Practicum/USBWebserver v8.6/apache2'
-[Wed Nov 25 07:51:22.227723 2015] [mpm_winnt:notice] [pid 8584:tid 692] AH00418: Parent: Created child process 9024
-[Wed Nov 25 07:51:22.881187 2015] [mpm_winnt:notice] [pid 9024:tid 672] AH00354: Child: Starting 64 worker threads.
+[Thu Nov 26 19:21:17.392556 2015] [mpm_winnt:notice] [pid 10936:tid 464] AH00455: Apache/2.4.6 (Win32) PHP/5.4.17 configured -- resuming normal operations
+[Thu Nov 26 19:21:17.392556 2015] [mpm_winnt:notice] [pid 10936:tid 464] AH00456: Apache Lounge VC10 Server built: Jul 16 2013 11:15:41
+[Thu Nov 26 19:21:17.392556 2015] [core:notice] [pid 10936:tid 464] AH00094: Command line: 'C:\\Users\\david\\Documents\\2de jaar\\Programming - Practicum\\USBWebserver v8.6/apache2/bin/httpd_usbwv8.exe -d C:/Users/david/Documents/2de jaar/Programming - Practicum/USBWebserver v8.6/apache2'
+[Thu Nov 26 19:21:17.394557 2015] [mpm_winnt:notice] [pid 10936:tid 464] AH00418: Parent: Created child process 6464
+[Thu Nov 26 19:21:17.838873 2015] [mpm_winnt:notice] [pid 6464:tid 672] AH00354: Child: Starting 64 worker threads.

@@ -48,11 +48,11 @@ CREATE TABLE IF NOT EXISTS `ploeg` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `ploeg/persoon`
+-- Tabelstructuur voor tabel `ploegpersoon`
 --
 
-DROP TABLE IF EXISTS `ploeg/persoon`;
-CREATE TABLE IF NOT EXISTS `ploeg/persoon` (
+DROP TABLE IF EXISTS `ploegpersoon`;
+CREATE TABLE IF NOT EXISTS `ploegpersoon` (
   `ploeg` int(11) NOT NULL ,
   `speler` int(11) NOT NULL,
   PRIMARY KEY (`speler`)
