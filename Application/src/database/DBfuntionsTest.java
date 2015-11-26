@@ -20,9 +20,8 @@ public class DBfuntionsTest {
     public static void main(String args[]) {
         
        
-//       
+   
         PersoonBag een=new PersoonBag();
-//        een.setId(1);
         een.setVoornaam("David");
         een.setNaam("Claeys");
         try {
@@ -34,7 +33,6 @@ public class DBfuntionsTest {
         System.out.println(een.getGeboortedatum());
         
         PersoonBag twee=new PersoonBag();
-//        twee.setId(2);
         twee.setVoornaam("Cristina");
         twee.setNaam("Claeys");
         try {
@@ -45,7 +43,6 @@ public class DBfuntionsTest {
         twee.setTrainer(false);
         
         PersoonBag drie=new PersoonBag();
-//        drie.setId(3);
         drie.setVoornaam("Papi");
         drie.setNaam("Chulo");
         try {
@@ -56,7 +53,6 @@ public class DBfuntionsTest {
         drie.setTrainer(true);
         
         PersoonBag vier=new PersoonBag();
-//        vier.setId(4);
         vier.setVoornaam("Mami");
         vier.setNaam("Chula");
         try {
