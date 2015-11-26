@@ -1,7 +1,6 @@
 /*
  * ApplicationException.java
  *
- * Created on 29 maart 2005, 14:02
  */
 package exception;
 

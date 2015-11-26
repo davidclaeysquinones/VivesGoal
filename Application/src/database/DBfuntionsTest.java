@@ -9,9 +9,9 @@ import exception.ApplicationException;
 import exception.DBException;
 import java.util.ArrayList;
 import java.util.Date;
-import vivesgoal.Categorie;
-import vivesgoal.databag.PersoonBag;
-import vivesgoal.databag.PloegBag;
+import databag.Categorie;
+import databag.PersoonBag;
+import databag.PloegBag;
 
 /**
  *

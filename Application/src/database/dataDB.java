@@ -1,17 +1,13 @@
-/*
- * KlantDB.java
- *
- * Created on 29 maart 2005, 13:59
- */
+
 package database;
 
 /**
  *
  * @author David
  */
-import vivesgoal.databag.PersoonBag;
-import vivesgoal.databag.PloegBag;
-import vivesgoal.Categorie;
+import databag.PersoonBag;
+import databag.PloegBag;
+import databag.Categorie;
 import exception.ApplicationException;
 import exception.DBException;
 import java.sql.*;
@@ -185,42 +181,44 @@ public class dataDB {
       }
    }
 
-//   public ArrayList<PloegBag> zoekAllePloegen()throws DBException
-//   {
-//       ArrayList ploegen = new ArrayList();
-//      // connectie tot stand brengen (en automatisch sluiten)
-//      try (Connection conn = ConnectionManager.getConnection();) {
-//         // preparedStatement opstellen (en automtisch sluiten)
-//         try (PreparedStatement stmt = conn.prepareStatement(
-//            "select * from ploeg");) {
-//            
-//            // execute voert het SQL-statement uit
-//            stmt.execute();
-//            // result opvragen (en automatisch sluiten)
-//            try (ResultSet r = stmt.getResultSet()) {
-//              while (r.next()) {
-//
-//                     PloegBag p = new PloegBag();
-//                     p.setId(r.getInt("id"));
-//                     p.setNaam(r.getString("naam"));
-//                     p.setCategorie(r.getString("categorie"));
-//                     p.setGeboortedatum(r.getDate("geboortedatum"));
-//                     p.setTrainer(r.getBoolean("trainer"));
-//                     p.setOpmerking(r.getString("opmerking"));
-//                     ploegen.add(p);
-//
-//               return returnPloeg;
-//            } catch (SQLException sqlEx) {
-//               throw new DBException("SQL-exception in zoekAllePloegen() - resultset" + sqlEx);
-//            }
-//         } catch (SQLException sqlEx) {
-//            throw new DBException("SQL-exception in zoekAllePloegen() - statement"+ sqlEx);
-//         }
-//      } catch (SQLException sqlEx) {
-//         throw new DBException(
-//            "SQL-exception in zoekPloeg(String naam) - connection");
-//      }
-//   }
+   public ArrayList<PloegBag> zoekAllePloegen()throws DBException
+   {
+       ArrayList ploegen = new ArrayList();
+      // connectie tot stand brengen (en automatisch sluiten)
+      try (Connection conn = ConnectionManager.getConnection();) {
+         // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.prepareStatement(
+            "select * from ploeg");) {
+            
+            // execute voert het SQL-statement uit
+            stmt.execute();
+            // result opvragen (en automatisch sluiten)
+            try (ResultSet r = stmt.getResultSet()) {
+              while (r.next()) {
+
+                     PloegBag p = new PloegBag();
+                     p.setId(r.getInt("id"));
+                     p.setNaam(r.getString("naam"));
+                     p.setCategorie(r.getObject("categorie",Categorie.class));
+                     p.setTrainer((r.getInt("trainer")));
+            
+                     ploegen.add(p);
+
+               
+            } 
+            }
+              catch (SQLException sqlEx) {
+               throw new DBException("SQL-exception in zoekAllePloegen() - resultset" + sqlEx);
+            }
+         } catch (SQLException sqlEx) {
+            throw new DBException("SQL-exception in zoekAllePloegen() - statement"+ sqlEx);
+         }
+      } catch (SQLException sqlEx) {
+         throw new DBException(
+            "SQL-exception in zoekPloeg(String naam) - connection");
+      }
+      return ploegen;
+   }
    public ArrayList<PersoonBag> zoekAlleTrainers() throws DBException, ApplicationException {
 
       ArrayList<PersoonBag> kl = new ArrayList<>();
