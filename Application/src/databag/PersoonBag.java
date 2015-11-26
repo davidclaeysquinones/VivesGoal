@@ -62,6 +62,15 @@ public class PersoonBag {
     public void setGeboortedatum(Date geboortedatum) {
         this.geboortedatum = geboortedatum;
     }
+    /**
+     * 
+     * @param jaar
+     * @param maand 
+     * @param dag
+     * setGeboortedatum(2016,1,1) stelt de datum in op 1 januari 2016
+     * @throws ApplicationException 
+     */
+
     public void setGeboortedatum(int jaar,int maand,int dag) throws ApplicationException{
         try {
             Calendar c=Calendar.getInstance();

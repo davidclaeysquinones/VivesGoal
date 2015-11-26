@@ -8,12 +8,9 @@ package database;
 import exception.ApplicationException;
 import exception.DBException;
 import java.util.ArrayList;
-import java.util.Date;
 import databag.Categorie;
 import databag.PersoonBag;
 import databag.PloegBag;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
