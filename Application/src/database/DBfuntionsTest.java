@@ -116,7 +116,7 @@ public class DBfuntionsTest {
         try{
             database.toevoegenPloeg(ploeg);
             System.out.println("naam :"+ploeg.getNaam()+" trainerid : "+ploeg.getTrainer());
-            System.out.println("ploeg toegevoegd");  
+            System.out.println("ploeg toegevoegd"+"\n");  
         }
         catch ( DBException e)
         {
@@ -129,6 +129,21 @@ public class DBfuntionsTest {
         catch ( DBException|ApplicationException e)
         {
             System.out.println("fout bij toevoegen speler "+e.getMessage());
+        }
+        
+          
+        ArrayList ploegen = new ArrayList();
+        try {
+            ploegen = database.zoekAllePloegen();
+        }
+        catch(DBException e)
+        {
+            System.out.println("fout bij opzoeken van alle ploegen"+e.getMessage());
+        }  
+        
+        for(int i=0;i<ploegen.size();i++)
+        {
+            System.out.println(ploegen.get(i));
         }
         
         System.out.println("\n"+"verwijderen spelers");
@@ -156,6 +171,17 @@ public class DBfuntionsTest {
         {
             System.out.println("fout bij verwijderen trainer"+e1.getMessage());
         }
+        }
+        System.out.println("succesfull");
+      
+        
+        
+        try{
+            database.verwijderAllePloegen();
+        }
+        catch ( DBException e)
+        {
+            System.out.println("fout bij verwijderen trainer"+e.getMessage());
         }
         System.out.println("succesfull");
     }

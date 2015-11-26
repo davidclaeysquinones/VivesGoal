@@ -143,7 +143,7 @@ public class dataDB {
             "SQL-exception in zoekPloeg(int id) - connection");
       }
    }
-
+ // debugged method
    public PloegBag zoekPloeg(String naam) throws DBException, ApplicationException {
       PloegBag returnPloeg = null;
       // connectie tot stand brengen (en automatisch sluiten)
@@ -188,24 +188,26 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "select * from ploeg");) {
+            "select id, naam,categorie,trainer from ploeg");) {
             
             // execute voert het SQL-statement uit
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-              while (r.next()) {
-
-                     PloegBag p = new PloegBag();
-                     p.setId(r.getInt("id"));
-                     p.setNaam(r.getString("naam"));
-                     p.setCategorie(r.getObject("categorie",Categorie.class));
-                     p.setTrainer((r.getInt("trainer")));
-            
-                     ploegen.add(p);
-
+              for(int i=0;i<ploegen.size();i++)
+              {
+                  PloegBag p=new PloegBag();
+                if (r.next()) {
+                  p.setId(r.getInt("id"));
+                  p.setNaam(r.getString("naam"));
+                  p.setCategorie(r.getObject("categorie",Categorie.class));
+                  
+                  ploegen.add(p);
+               }
+              }
+              
+              return ploegen;
                
-            } 
             }
               catch (SQLException sqlEx) {
                throw new DBException("SQL-exception in zoekAllePloegen() - resultset" + sqlEx);
@@ -217,7 +219,7 @@ public class dataDB {
          throw new DBException(
             "SQL-exception in zoekPloeg(String naam) - connection");
       }
-      return ploegen;
+      
    }
    
    // debugged method
@@ -721,13 +723,13 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "delete * from ploegpersoon ");) {
+            "delete from ploegpersoon ");) {
              
             stmt.execute();      
          } 
           // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "delete * from ploeg ");) {
+            "delete from ploeg ");) {
             
            
             
