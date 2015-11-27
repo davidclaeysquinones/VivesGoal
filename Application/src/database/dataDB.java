@@ -162,7 +162,12 @@ public class dataDB {
                }
 
                return returnPloeg;
-            } catch (SQLException sqlEx) {
+            }   catch(NullPointerException e)
+                {
+                    throw new ApplicationException("De opgegeven id staat niet in de database");
+                }
+            
+                catch (SQLException sqlEx) {
                throw new DBException("SQL-exception in zoekPloeg(int id) - resultset" + sqlEx);
             }
          } catch (SQLException sqlEx) {
@@ -235,7 +240,12 @@ public class dataDB {
                }
 
                return returnPloeg;
-            } catch (SQLException sqlEx) {
+            }catch(NullPointerException e)
+                {
+                    throw new ApplicationException("De opgegeven id in het PloegBag object staat niet in de database");
+                } 
+            
+            catch (SQLException sqlEx) {
                throw new DBException("SQL-exception in zoekPloeg(int id) - resultset" + sqlEx);
             }
          } catch (SQLException sqlEx) {
@@ -288,7 +298,7 @@ public class dataDB {
    }
    
    // debugged method
-   public ArrayList<PersoonBag> zoekAlleTrainers() throws DBException, ApplicationException {
+   public ArrayList<PersoonBag> zoekAlleTrainers() throws DBException {
 
       ArrayList<PersoonBag> kl = new ArrayList<>();
       // connectie tot stand brengen (en automatisch sluiten)
@@ -315,7 +325,7 @@ public class dataDB {
                      k.setOpmerking(r.getString("opmerking"));
                      kl.add(k);
                   }
-                  return kl;
+                  
                } catch (SQLException sqlEx) {
                   throw new DBException(
                      "SQL-exception in zoekAlleTrainers - resultset"+ sqlEx);
@@ -328,7 +338,7 @@ public class dataDB {
          throw new DBException(
             "SQL-exception in zoekAlleTrainers - connection"+ sqlEx);
       }
-
+      return kl;
    }
    
     

@@ -98,14 +98,14 @@ public class DBfuntionsTest {
             System.out.println(trainer.get(i).toString());
         }
         
+        
         PloegBag ploeg=new PloegBag();
         ploeg.setNaam("los papis");
         ploeg.setCategorie(Categorie.U6);
         try{
             PersoonBag p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
             ploeg.setTrainer(p.getId());
-            System.out.println(p);
-            System.out.println("instellen trainer"+"\n");
+            System.out.println("\n"+"instellen trainer"+"\n");
                   
         }
         catch ( DBException|ApplicationException e)
