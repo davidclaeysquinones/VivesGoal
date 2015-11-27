@@ -97,7 +97,6 @@ public class DBfuntionsTest {
         {
             System.out.println(trainer.get(i).toString());
         }
-        System.out.println("\n");
         
         PloegBag ploeg=new PloegBag();
         ploeg.setNaam("los papis");
@@ -105,7 +104,8 @@ public class DBfuntionsTest {
         try{
             PersoonBag p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
             ploeg.setTrainer(p.getId());
-            System.out.println("naam : "+p.getNaam()+" voornaam : "+p.getVoornaam()+" id : "+p.getId());
+            System.out.println(p);
+            System.out.println("instellen trainer"+"\n");
                   
         }
         catch ( DBException|ApplicationException e)
@@ -118,7 +118,6 @@ public class DBfuntionsTest {
         
         try{
             database.toevoegenPloeg(ploeg);
-            System.out.println("naam :"+ploeg.getNaam()+" trainerid : "+ploeg.getTrainer());
             System.out.println("ploeg toegevoegd"+"\n");  
         }
         catch ( DBException e)
@@ -129,8 +128,8 @@ public class DBfuntionsTest {
         try{
             database.toevoegenSpelerPloeg(database.zoekPloeg(ploeg.getNaam()),database.zoekPersoon(een.getNaam(), een.getVoornaam()));
             PloegBag p=database.zoekPloeg(ploeg.getNaam());
-            System.out.println(p);
             database.toevoegenSpelerPloeg(p,database.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
+            System.out.println("toevoegen spelers aan ploeg"+"\n");
         }
         catch ( DBException|ApplicationException|NullPointerException e)
         {
@@ -140,58 +139,79 @@ public class DBfuntionsTest {
         
      
           
-        ArrayList ploegen = new ArrayList();
+       ArrayList ploegen = new ArrayList(); 
         try {
+            
             ploegen = database.zoekAllePloegen();
+            System.out.println("Alle ploegen zoeken"+"\n");
         }
-        catch(DBException e)
+        catch(DBException|ApplicationException e)
         {
             System.out.println("fout bij opzoeken van alle ploegen"+e.getMessage());
-        }  
+        } 
+        
+        try {
+            PloegBag p=database.zoekPloeg(ploeg.getNaam());
+            System.out.println("opzoeken ploeg : "+p+"\n");
+        }
+        catch(DBException|ApplicationException e)
+        {
+            System.out.println("fout bij opzoeken ploeg "+e.getMessage());
+        }
         
         for(int i=0;i<ploegen.size();i++)
         {
             System.out.println(ploegen.get(i));
         }
         
-        System.out.println("\n"+"verwijderen spelers");
+        
         for(int i=0;i<speler.size();i++)
         {
             PersoonBag a = (PersoonBag) speler.get(i);
             try{
             database.verwijderPersoon(a.getId());
+            if(i==0)
+            {
+                System.out.println("verwijderen spelers"+"\n");
+            }
         }
         catch(DBException   e1)
         {
             System.out.println("fout bij verwijderen speler"+e1.getMessage());
         }
         }
-        System.out.println("succesfull");
         
-        System.out.println("\n"+"verwijderen trainers");
+        
+        
         for(int i=0;i<trainer.size();i++)
         {
             PersoonBag a = (PersoonBag) trainer.get(i);
             try{
             database.verwijderPersoon(a.getNaam(),a.getVoornaam());
+            if(i==0)
+            {
+                System.out.println("verwijderen trainers"+"\n");
+            }
+            
         }
         catch(DBException   e1)
         {
             System.out.println("fout bij verwijderen trainer"+e1.getMessage());
         }
         }
-        System.out.println("succesfull");
+       
       
         
         
         try{
             database.verwijderAllePloegen();
+            System.out.println("Alle ploegen verwijderen");
         }
         catch ( DBException e)
         {
             System.out.println("fout bij verwijderen trainer"+e.getMessage());
         }
-        System.out.println("succesfull");
+  
     }
     
 
