@@ -113,6 +113,9 @@ public class DBfuntionsTest {
             System.out.println("fout bij opzoeken trainer "+e.getMessage());
         }
         
+        
+        
+        
         try{
             database.toevoegenPloeg(ploeg);
             System.out.println("naam :"+ploeg.getNaam()+" trainerid : "+ploeg.getTrainer());
@@ -124,13 +127,18 @@ public class DBfuntionsTest {
         }
         
         try{
-            database.toevoegenSpelerPloeg(ploeg,database.zoekPersoon(een.getNaam(), een.getVoornaam()));
+            database.toevoegenSpelerPloeg(database.zoekPloeg(ploeg.getNaam()),database.zoekPersoon(een.getNaam(), een.getVoornaam()));
+            PloegBag p=database.zoekPloeg(ploeg.getNaam());
+            System.out.println(p);
+            database.toevoegenSpelerPloeg(p,database.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
         }
-        catch ( DBException|ApplicationException e)
+        catch ( DBException|ApplicationException|NullPointerException e)
         {
             System.out.println("fout bij toevoegen speler "+e.getMessage());
         }
         
+        
+     
           
         ArrayList ploegen = new ArrayList();
         try {

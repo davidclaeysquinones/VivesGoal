@@ -5,6 +5,8 @@
  */
 package databag;
 
+import exception.ApplicationException;
+
 /**
  *
  * @author david
@@ -49,6 +51,15 @@ public class PloegBag {
     {
         this.categorie=categorie;
     }
+     public void setCategorie(String categorie) throws ApplicationException {
+        try {
+            this.categorie = Categorie.valueOf(categorie);
+        }
+        catch (IllegalArgumentException e) 
+        {
+            throw new ApplicationException("Geen geldige status voor Klant");
+        }
+    }
     
     
     /**
@@ -58,5 +69,12 @@ public class PloegBag {
     public void setTrainer(int id) 
     {
         trainer=id;
+    }
+    
+    @Override
+    public String toString()
+    {
+        String output ="id : "+id+" naam : "+naam;
+        return output;
     }
 }

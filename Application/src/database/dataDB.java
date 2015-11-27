@@ -7,20 +7,13 @@ package database;
  */
 import databag.PersoonBag;
 import databag.PloegBag;
-import databag.Categorie;
 import exception.ApplicationException;
 import exception.DBException;
 import java.sql.*;
 import java.util.*;
 
 /**
- * Bevat alle functionaliteit op de database-tabel klant. - schrappen van een
- * klant - toevoegen van een klant - wijzigen van klant - zoeken van alle
- * klanten gesorteerd op naam, voornaam - zoeken van alle ingeschreven klanten
- * gesorteerd op naam, voornaam - zoeken van alle uitgeschreven klanten
- * gesorteerd op naam, voornaam - zoeken van een klant op id - zoeken van een
- * klant op naam, voornaam, adres, postcode en gemeente Deze class levert
- * business-objecten op.
+Bevat alle functionaliteiten voor de database
  */
 public class dataDB {
 
@@ -34,13 +27,13 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "select id, naam, voornaam, geboortedatum, trainer,opmerking from persoon where id = '?'");) {
+            "select id, naam, voornaam, geboortedatum, trainer,opmerking from persoon where id=?");) {
             stmt.setInt(1, id);
             // execute voert het SQL-statement uit
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van de klant uit de database een KlantBag-object maken
+               // van de persoon uit de database een PersoonBag-object maken
                PersoonBag k = new PersoonBag();
 
                // er werd een persoon gevonden
@@ -80,7 +73,7 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van de klant uit de database een KlantBag-object maken
+               // van de persoon uit de database een PersoonBag-object maken
                PersoonBag k = new PersoonBag();
 
                // er werd een persoon gevonden
@@ -106,7 +99,44 @@ public class dataDB {
             "SQL-exception in zoekPersoon(String naam,String voornaam)t - connection");
       }
    }
+   public PersoonBag zoekPersoon(PersoonBag p) throws DBException, ApplicationException {
+      PersoonBag returnPersoon = null;
+      // connectie tot stand brengen (en automatisch sluiten)
+      try (Connection conn = ConnectionManager.getConnection();) {
+         // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.prepareStatement(
+            "select id, naam, voornaam, geboortedatum, trainer,opmerking from persoon where id=?");) {
+            stmt.setInt(1,p.getId());
+            // execute voert het SQL-statement uit
+            stmt.execute();
+            // result opvragen (en automatisch sluiten)
+            try (ResultSet r = stmt.getResultSet()) {
+               // van de persoon uit de database een PersoonBag-object maken
+               PersoonBag k = new PersoonBag();
 
+               // er werd een persoon gevonden
+               if (r.next()) {
+                  k.setId(r.getInt("id"));
+                  k.setNaam(r.getString("naam"));
+                  k.setVoornaam(r.getString("voornaam"));
+                  k.setGeboortedatum(r.getDate("geboortedatum"));
+                  k.setTrainer(r.getBoolean("trainer"));
+                  k.setOpmerking(r.getString("opmerking"));
+                  returnPersoon = k;
+               }
+
+               return returnPersoon;
+            } catch (SQLException sqlEx) {
+               throw new DBException("SQL-exception in zoekPersoon(int id) - resultset" + sqlEx);
+            }
+         } catch (SQLException sqlEx) {
+            throw new DBException("SQL-exception in zoekPersoon(int id)- statement"+ sqlEx);
+         }
+      } catch (SQLException sqlEx) {
+         throw new DBException(
+            "SQL-exception in zoekPersoon(int id)- connection");
+      }
+   }
    public PloegBag zoekPloeg(int id) throws DBException, ApplicationException {
       PloegBag returnPloeg = null;
       // connectie tot stand brengen (en automatisch sluiten)
@@ -119,14 +149,14 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van de klant uit de database een KlantBag-object maken
+               // van de ploeg uit de database een PloegBag-object maken
                PloegBag k = new PloegBag();
 
                // er werd een ploeg gevonden
                if (r.next()) {
                   k.setId(r.getInt("id"));
                   k.setNaam(r.getString("naam"));
-                  k.setCategorie(r.getObject("categorie",Categorie.class));
+                  k.setCategorie(r.getString("categorie"));
                   
                   returnPloeg = k;
                }
@@ -150,20 +180,20 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "select id, naam,categorie,trainer from ploeg where naam = ?");) {
+            "select id, naam,categorie,trainer from ploeg where naam=?");) {
             stmt.setString(1, naam);
             // execute voert het SQL-statement uit
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van de klant uit de database een KlantBag-object maken
+               // van de ploeg uit de database een PloegBag-object maken
                PloegBag k = new PloegBag();
 
                // er werd een ploeg gevonden
                if (r.next()) {
                   k.setId(r.getInt("id"));
                   k.setNaam(r.getString("naam"));
-                  k.setCategorie(r.getObject("categorie",Categorie.class));
+                  k.setCategorie(r.getString("categorie"));
                   
                   returnPloeg = k;
                }
@@ -180,8 +210,43 @@ public class dataDB {
             "SQL-exception in zoekPloeg(String naam) - connection");
       }
    }
+   public PloegBag zoekPloeg(PloegBag p) throws DBException, ApplicationException {
+      PloegBag returnPloeg = null;
+      // connectie tot stand brengen (en automatisch sluiten)
+      try (Connection conn = ConnectionManager.getConnection();) {
+         // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.prepareStatement(
+            "select id, naam,categorie,trainer from ploeg where id = ?");) {
+            stmt.setInt(1, p.getId());
+            // execute voert het SQL-statement uit
+            stmt.execute();
+            // result opvragen (en automatisch sluiten)
+            try (ResultSet r = stmt.getResultSet()) {
+               // van de ploeg uit de database een PloegBag-object maken
+               PloegBag k = new PloegBag();
 
-   public ArrayList<PloegBag> zoekAllePloegen()throws DBException
+               // er werd een ploeg gevonden
+               if (r.next()) {
+                  k.setId(r.getInt("id"));
+                  k.setNaam(r.getString("naam"));
+                  k.setCategorie(r.getString("categorie"));
+                  
+                  returnPloeg = k;
+               }
+
+               return returnPloeg;
+            } catch (SQLException sqlEx) {
+               throw new DBException("SQL-exception in zoekPloeg(int id) - resultset" + sqlEx);
+            }
+         } catch (SQLException sqlEx) {
+            throw new DBException("SQL-exception in zoekPloeg(int id) - statement"+ sqlEx);
+         }
+      } catch (SQLException sqlEx) {
+         throw new DBException(
+            "SQL-exception in zoekPloeg(int id) - connection");
+      }
+   }
+   public ArrayList<PloegBag> zoekAllePloegen()throws DBException,ApplicationException
    {
        ArrayList ploegen = new ArrayList();
       // connectie tot stand brengen (en automatisch sluiten)
@@ -200,7 +265,7 @@ public class dataDB {
                 if (r.next()) {
                   p.setId(r.getInt("id"));
                   p.setNaam(r.getString("naam"));
-                  p.setCategorie(r.getObject("categorie",Categorie.class));
+                  p.setCategorie(r.getString("categorie"));
                   
                   ploegen.add(p);
                }
@@ -334,8 +399,8 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van alle klanten uit de database KlantBag-objecten maken
-               // en in een KlantVector steken
+               // van alle spelers uit de database PersoonBag-objecten maken
+             
 
                while (r.next()) {
                   PersoonBag k = new PersoonBag();
@@ -349,14 +414,14 @@ public class dataDB {
                return kl;
             } catch (SQLException sqlEx) {
                throw new DBException(
-                  "SQL-exception in zoekAlleKlanten - resultset"+ sqlEx);
+                  "SQL-exception in zoekSpelersPloeg(String ploegnaam) - resultset"+ sqlEx);
             }
          } catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in zoekAlleKlanten - statement"+ sqlEx);
+            throw new DBException("SQL-exception in zoekSpelersPloeg(String ploegnaam) - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
          throw new DBException(
-            "SQL-exception in zoekAlleKlanten - connection"+ sqlEx);
+            "SQL-exception in zoekSpelersPloeg(String ploegnaam) - connection"+ sqlEx);
       }
    }
    
@@ -372,8 +437,8 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van alle klanten uit de database KlantBag-objecten maken
-               // en in een KlantVector steken
+               // van alle spelers uit de database PloegBag-objecten maken
+          
 
                while (r.next()) {
                   PersoonBag k = new PersoonBag();
@@ -387,14 +452,14 @@ public class dataDB {
                return kl;
             } catch (SQLException sqlEx) {
                throw new DBException(
-                  "SQL-exception in zoekAlleKlanten - resultset"+ sqlEx);
+                  "SQL-exception in zoekSpelersPloeg(int id) - resultset"+ sqlEx);
             }
          } catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in zoekAlleKlanten - statement"+ sqlEx);
+            throw new DBException("SQL-exception in zoekSpelersPloeg(int id)n - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
          throw new DBException(
-            "SQL-exception in zoekAlleKlanten - connection"+ sqlEx);
+            "SQL-exception in zoekSpelersPloeg(int id) - connection"+ sqlEx);
       }
    }
 
@@ -425,15 +490,15 @@ public class dataDB {
                   return k;
                } catch (SQLException sqlEx) {
                   throw new DBException(
-                     "SQL-exception in zoekIngeschrevenKlanten - resultset"+ sqlEx);
+                     "SQL-exception in getTrainer (int ploegid) - resultset"+ sqlEx);
                }
             } catch (SQLException sqlEx) {
                throw new DBException(
-                  "SQL-exception in zoekIngeschrevenKlanten - statement"+ sqlEx);
+                  "SQL-exception in getTrainer (int ploegid) - statement"+ sqlEx);
             }
       } catch (SQLException sqlEx) {
          throw new DBException(
-            "SQL-exception in zoekIngeschrevenKlanten - connection"+ sqlEx);
+            "SQL-exception in getTrainer (int ploegid) - connection"+ sqlEx);
       }
    }
    
@@ -464,15 +529,15 @@ public class dataDB {
                   return k;
                } catch (SQLException sqlEx) {
                   throw new DBException(
-                     "SQL-exception in zoekIngeschrevenKlanten - resultset"+ sqlEx);
+                     "SQL-exception in getTrainer (String ploegnaam) - resultset"+ sqlEx);
                }
             } catch (SQLException sqlEx) {
                throw new DBException(
-                  "SQL-exception in zoekIngeschrevenKlanten - statement"+ sqlEx);
+                  "SQL-exception in getTrainer (String ploegnaam) - statement"+ sqlEx);
             }
       } catch (SQLException sqlEx) {
          throw new DBException(
-            "SQL-exception in zoekIngeschrevenKlanten - connection"+ sqlEx);
+            "SQL-exception in getTrainer (String ploegnaam) - connection"+ sqlEx);
       }
    }
    
@@ -788,14 +853,14 @@ public class dataDB {
       }
    }
    
-   public void toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag persoon) throws DBException
+   public void toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) throws DBException
    {
        // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
             "INSERT INTO ploegpersoon (speler,ploeg) VALUES (?,?);");) {
-            stmt.setInt(1, persoon.getId());
+            stmt.setInt(1, speler.getId());
             stmt.setInt(2, ploeg.getId());
             
             stmt.execute();
@@ -823,11 +888,11 @@ public class dataDB {
             stmt.execute();
          }
           catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in verwijderKlant - statement"+ sqlEx);
+            throw new DBException("SQL-exception in verwijderSpelerPloeg(int id) - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
          throw new DBException(
-            "SQL-exception in verwijderKlant - connection"+ sqlEx);
+            "SQL-exception in verwijderSpelerPloeg(int id) - connection"+ sqlEx);
       }
    }
    
@@ -844,13 +909,14 @@ public class dataDB {
             stmt.execute();
          }
           catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in verwijderKlant - statement"+ sqlEx);
+            throw new DBException("SQL-exception in verwijderSpelerPloeg(PersoonBag p) - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
          throw new DBException(
-            "SQL-exception in verwijderKlant - connection"+ sqlEx);
+            "SQL-exception in verwijderSpelerPloeg(PersoonBag p) - connection"+ sqlEx);
       }
    }
+   
    public void verwijderSpelerPloeg(String naam,String voornaam) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
@@ -865,13 +931,14 @@ public class dataDB {
             stmt.execute();
          }
           catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in verwijderKlant - statement"+ sqlEx);
+            throw new DBException("SQL-exception in verwijderSpelerPloeg(String naam,String voornaam) - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
          throw new DBException(
-            "SQL-exception in verwijderKlant - connection"+ sqlEx);
+            "SQL-exception in verwijderSpelerPloeg(String naam,String voornaam)t - connection"+ sqlEx);
       }
    }
+   
    public void toevoegenTrainerPloeg(int persoonid,int ploegid) throws DBException
    {
         // connectie tot stand brengen (en automatisch sluiten)
