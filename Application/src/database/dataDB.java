@@ -1086,5 +1086,34 @@ public class dataDB {
             "SQL-exception in wijzigenPersoon(PersoonBag p) - connection"+ sqlEx);
       }
    }
+   public void wijzigenPersoon(String naam,String voornaam,PersoonBag p) throws DBException {
+
+      // connectie tot stand brengen (en automatisch sluiten)
+      try (Connection conn = ConnectionManager.getConnection();) {
+         // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.
+            prepareStatement("update persoon set naam = ?, "
+               + "voornaam =?, "
+               + "geboortedatum = ?, "
+               + "trainer = ?, "
+               + "where naam = ? and voornaam = ?");) {
+
+            stmt.setString(1, p.getNaam());
+            stmt.setString(2, p.getVoornaam());
+            stmt.setDate(3, new java.sql.Date(p.getGeboortedatum().getTime()));
+            stmt.setBoolean(4, p.getTrainer());
+            stmt.setString(6,naam );
+            stmt.setString(6,voornaam );
+
+            // execute voert elke sql-statement uit, executeQuery enkel de select
+            stmt.execute();
+         } catch (SQLException sqlEx) {
+            throw new DBException("SQL-exception in wijzigenPersoon(PersoonBag p) -sql statement"+ sqlEx);
+         }
+      } catch (SQLException sqlEx) {
+         throw new DBException(
+            "SQL-exception in wijzigenPersoon(PersoonBag p) - connection"+ sqlEx);
+      }
+   }
    
 }
