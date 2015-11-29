@@ -131,7 +131,8 @@ public class DBfuntionsTest {
             database.toevoegenSpelerPloeg(p,database.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
             System.out.println("toevoegen spelers aan ploeg"+"\n");
         }
-        catch ( DBException|ApplicationException|NullPointerException e)
+        catch ( DBException|ApplicationException
+                e)
         {
             System.out.println("fout bij toevoegen speler "+e.getMessage());
         }
@@ -164,6 +165,20 @@ public class DBfuntionsTest {
             System.out.println(ploegen.get(i));
         }
         
+        try {
+            PersoonBag a = new PersoonBag();
+            a.setNaam("Mano");
+            a.setVoornaam("Lito");
+            database.wijzigenPersoon(een.getNaam(), een.getVoornaam(), a);
+            System.out.println("Wijzigen persoon"+"\n");
+            
+          
+            
+        }
+        catch(DBException|ApplicationException e)
+        {
+            System.out.println("fout bij wijzigen persoon "+e.getMessage());
+        }
         
         for(int i=0;i<speler.size();i++)
         {

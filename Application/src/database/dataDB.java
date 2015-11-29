@@ -5,10 +5,8 @@ package database;
  *
  * @author David
  */
-import databag.PersoonBag;
-import databag.PloegBag;
-import exception.ApplicationException;
-import exception.DBException;
+import databag.*;
+import exception.*;
 import java.sql.*;
 import java.util.*;
 
@@ -19,8 +17,7 @@ public class dataDB {
 
    public dataDB() {
    }
-
- 
+   
    public PersoonBag zoekPersoon(int id) throws DBException, ApplicationException {
       PersoonBag returnPersoon = null;
       // connectie tot stand brengen (en automatisch sluiten)
@@ -48,7 +45,12 @@ public class dataDB {
                }
 
                return returnPersoon;
-            } catch (SQLException sqlEx) {
+            }catch(NullPointerException e)
+            {
+                throw new ApplicationException("De opgegeven persoon werd niet gevonden");
+            }
+            
+            catch (SQLException sqlEx) {
                throw new DBException("SQL-exception in zoekPersoon(int id) - resultset" + sqlEx);
             }
          } catch (SQLException sqlEx) {
@@ -88,7 +90,15 @@ public class dataDB {
                }
 
                return returnPersoon;
-            } catch (SQLException sqlEx) {
+            }
+            
+            
+            catch(NullPointerException e)
+                {
+                    throw new ApplicationException("Er staat geen persoon in de database met de opgegeven naam en voornaam");
+                }   
+            
+            catch (SQLException sqlEx) {
                throw new DBException("SQL-exception in zoekPersoon(String naam,String voornaam) - resultset" + sqlEx);
             }
          } catch (SQLException sqlEx) {
@@ -204,7 +214,12 @@ public class dataDB {
                }
 
                return returnPloeg;
-            } catch (SQLException sqlEx) {
+            }catch(NullPointerException e)
+                {
+                    throw new ApplicationException("De opgegeven ploegnaam staat niet in de database");
+                }  
+            
+            catch (SQLException sqlEx) {
                throw new DBException("SQL-exception in zoekPloeg(String naam) - resultset" + sqlEx);
             }
          } catch (SQLException sqlEx) {
@@ -791,7 +806,7 @@ public class dataDB {
       }
 
    }
-   
+//   debugged
    public void verwijderAllePloegen() throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
@@ -819,6 +834,7 @@ public class dataDB {
       }
 
    }
+//   debugged
    public void toevoegenSpelerPloeg(int ploegid,PersoonBag p) throws DBException
    {
        // connectie tot stand brengen (en automatisch sluiten)
@@ -840,7 +856,7 @@ public class dataDB {
             "SQL-exception in toevoegenSpelerPloeg(int ploegid,PersoonBag p) - connection"+ sqlEx);
       }
    }
-   
+//   debugged
    public void toevoegenSpelerPloeg(String ploegnaam,PersoonBag p) throws DBException
    {
        // connectie tot stand brengen (en automatisch sluiten)
@@ -862,7 +878,7 @@ public class dataDB {
             "SQL-exception in toevoegenSpelerPloeg(String naam,PersoonBag p) - connection"+ sqlEx);
       }
    }
-   
+//   debugged
    public void toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) throws DBException
    {
        // connectie tot stand brengen (en automatisch sluiten)
@@ -1058,62 +1074,142 @@ public class dataDB {
             "SQL-exception in verwijderTrainerPloeg(int ploegid) - connection"+ sqlEx);
       }
    }
-   public void wijzigenPersoon(PersoonBag p) throws DBException {
+//    debugged
+   public void wijzigenPersoon(PersoonBag p) throws DBException, ApplicationException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
-         try (PreparedStatement stmt = conn.
-            prepareStatement("update persoon set naam = ?, "
-               + "voornaam =?, "
-               + "geboortedatum = ?, "
-               + "trainer = ?, "
-               + "where id = ?");) {
+          
+          System.out.println(p.getTrainer());
+          if(p.getNaam()!=null && p.getVoornaam()!=null && p.getGeboortedatum()!=null && p.getOpmerking()!=null )
+          {
+              try (PreparedStatement stmt = conn.
+            prepareStatement("update persoon set naam = ?, voornaam =?,geboortedatum = ?,trainer = ?,opmerking= ? where id = ?");) {
 
             stmt.setString(1, p.getNaam());
             stmt.setString(2, p.getVoornaam());
             stmt.setDate(3, new java.sql.Date(p.getGeboortedatum().getTime()));
             stmt.setBoolean(4, p.getTrainer());
+            stmt.setString(5, p.getOpmerking());
             stmt.setInt(6, p.getId());
 
             // execute voert elke sql-statement uit, executeQuery enkel de select
             stmt.execute();
-         } catch (SQLException sqlEx) {
+         }catch(NullPointerException e)
+         {
+             throw new ApplicationException("De opgegeven persoon kon niet gewijzigd worden "+e.getMessage());
+         } 
+         
+         catch (SQLException sqlEx) {
             throw new DBException("SQL-exception in wijzigenPersoon(PersoonBag p) -sql statement"+ sqlEx);
          }
+          }
+          else
+          {
+              if(p.getNaam()!=null && p.getVoornaam()!=null && p.getGeboortedatum()!=null)
+              {
+                  try (PreparedStatement stmt = conn.
+                     prepareStatement("update persoon set naam = ?, voornaam =?,geboortedatum = ?,trainer = ? where id = ?");) {
+
+                     stmt.setString(1, p.getNaam());
+                     stmt.setString(2, p.getVoornaam());
+                     stmt.setDate(3, new java.sql.Date(p.getGeboortedatum().getTime()));
+                     stmt.setBoolean(4, p.getTrainer());
+                     stmt.setInt(5, p.getId());
+
+                       // execute voert elke sql-statement uit, executeQuery enkel de select
+                    stmt.execute();
+                  }catch(NullPointerException e)
+                 {
+                   throw new ApplicationException("De opgegeven persoon kon niet gewijzigd worden "+e.getMessage());
+                 } 
+         
+                    catch (SQLException sqlEx) {
+                     throw new DBException("SQL-exception in wijzigenPersoon(PersoonBag p) -sql statement"+ sqlEx);
+                }
+              }
+              else
+              {
+                  if(p.getNaam()!=null && p.getVoornaam()!=null)
+                  {
+                      try (PreparedStatement stmt = conn.
+                         prepareStatement("update persoon set naam = ?, voornaam =?,trainer = ? where id = ?");) {
+
+                             stmt.setString(1, p.getNaam());
+                             stmt.setString(2, p.getVoornaam());                      
+                             stmt.setBoolean(3,p.getTrainer());
+                             stmt.setInt(4, p.getId());
+
+                            // execute voert elke sql-statement uit, executeQuery enkel de select
+                            stmt.execute();
+                        }catch(NullPointerException e)
+                          {
+                                throw new ApplicationException("De opgegeven persoon kon niet gewijzigd worden "+e.getMessage());
+                          } 
+         
+                          catch (SQLException sqlEx) {
+                                throw new DBException("SQL-exception in wijzigenPersoon(PersoonBag p) -sql statement"+ sqlEx);
+                            }
+                  }
+                  else
+                  {
+                      if(p.getNaam()!=null)
+                      {
+                          try (PreparedStatement stmt = conn.
+                         prepareStatement("update persoon set naam = ?,trainer = ? where id = ?");) {
+
+                             stmt.setString(1, p.getNaam());         
+                             stmt.setBoolean(2, p.getTrainer());
+                             stmt.setInt(3, p.getId());
+
+                            // execute voert elke sql-statement uit, executeQuery enkel de select
+                            stmt.execute();
+                        }catch(NullPointerException e)
+                          {
+                                throw new ApplicationException("De opgegeven persoon kon niet gewijzigd worden "+e.getMessage());
+                          } 
+         
+                          catch (SQLException sqlEx) {
+                                throw new DBException("SQL-exception in wijzigenPersoon(PersoonBag p) -sql statement"+ sqlEx);
+                            }
+                      }
+                      else
+                      {
+                          try (PreparedStatement stmt = conn.
+                         prepareStatement("update persoon set voornaam =?, trainer = ? where id = ?");) {
+
+                             stmt.setString(1, p.getVoornaam());         
+                             stmt.setBoolean(2,p.getTrainer());
+                             stmt.setInt(3, p.getId());
+
+                            // execute voert elke sql-statement uit, executeQuery enkel de select
+                            stmt.execute();
+                        }catch(NullPointerException e)
+                          {
+                                throw new ApplicationException("De opgegeven persoon kon niet gewijzigd worden "+e.getMessage());
+                          } 
+         
+                          catch (SQLException sqlEx) {
+                                throw new DBException("SQL-exception in wijzigenPersoon(PersoonBag p) -sql statement"+ sqlEx);
+                            }
+                      }
+                  }
+              }
+          }
+          
       } catch (SQLException sqlEx) {
          throw new DBException(
             "SQL-exception in wijzigenPersoon(PersoonBag p) - connection"+ sqlEx);
       }
    }
-   public void wijzigenPersoon(String naam,String voornaam,PersoonBag p) throws DBException {
+//   debugged
+   public void wijzigenPersoon(String naam,String voornaam,PersoonBag p) throws DBException, ApplicationException {
 
-      // connectie tot stand brengen (en automatisch sluiten)
-      try (Connection conn = ConnectionManager.getConnection();) {
-         // preparedStatement opstellen (en automtisch sluiten)
-         try (PreparedStatement stmt = conn.
-            prepareStatement("update persoon set naam = ?, "
-               + "voornaam =?, "
-               + "geboortedatum = ?, "
-               + "trainer = ?, "
-               + "where naam = ? and voornaam = ?");) {
-
-            stmt.setString(1, p.getNaam());
-            stmt.setString(2, p.getVoornaam());
-            stmt.setDate(3, new java.sql.Date(p.getGeboortedatum().getTime()));
-            stmt.setBoolean(4, p.getTrainer());
-            stmt.setString(6,naam );
-            stmt.setString(6,voornaam );
-
-            // execute voert elke sql-statement uit, executeQuery enkel de select
-            stmt.execute();
-         } catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in wijzigenPersoon(PersoonBag p) -sql statement"+ sqlEx);
-         }
-      } catch (SQLException sqlEx) {
-         throw new DBException(
-            "SQL-exception in wijzigenPersoon(PersoonBag p) - connection"+ sqlEx);
-      }
+          PersoonBag a =zoekPersoon(naam,voornaam);
+          p.setId(a.getId());
+          wijzigenPersoon(p);
+         
    }
    
 }
