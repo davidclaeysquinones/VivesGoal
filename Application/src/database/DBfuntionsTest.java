@@ -209,7 +209,7 @@ public class DBfuntionsTest {
             }
             
         }
-        catch(DBException   e1)
+        catch(DBException|ApplicationException   e1)
         {
             System.out.println("fout bij verwijderen trainer"+e1.getMessage());
         }

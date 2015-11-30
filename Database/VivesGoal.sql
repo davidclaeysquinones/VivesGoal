@@ -17,43 +17,29 @@ USE `VivesGoal`;
 
 -- --------------------------------------------------------
 
---
--- Tabelstructuur voor tabel `persoon`
---
+CREATE TABLE persoon (
+id int(11) NOT NULL AUTO_INCREMENT, 
+naam varchar(32) NOT NULL, 
+voornaam varchar(32) NOT NULL, 
+geboortedatum date NOT NULL, 
+opmerking text, 
+isTrainer tinyint(1) NOT NULL, 
+ploeg_id int(11), 
+CONSTRAINT voornaam PRIMARY KEY (id)
+);
 
-DROP TABLE IF EXISTS `persoon`;
-CREATE TABLE IF NOT EXISTS `persoon` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Naam` varchar(50) NOT NULL,
-  `Voornaam` varchar(50) NOT NULL,
-  `Geboortedatum` DATE NOT NULL,
-  `TRAINER` BOOLEAN NOT NULL,
-  `Opmerking` varchar(50),
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1  ;
--- --------------------------------------------------------
+CREATE TABLE ploeg (
+id int(11) NOT NULL AUTO_INCREMENT, 
+naam varchar(32) NOT NULL, 
+niveau enum('U6', 'U7', 'U8', 'U9','U10', 'U11') NOT NULL,
+trainer_id int(11), 
+PRIMARY KEY (id)
+);
 
---
--- Tabelstructuur voor tabel `ploeg`
---
+ALTER TABLE persoon 
+ADD INDEX `is speler van` (ploeg_id), 
+ADD CONSTRAINT `is speler van` FOREIGN KEY (ploeg_id) REFERENCES ploeg (id);
 
-DROP TABLE IF EXISTS `ploeg`;
-CREATE TABLE IF NOT EXISTS `ploeg` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Naam` varchar(50) NOT NULL,
-  `Status` enum('U6','U7','U8','U9','U10','U11') NOT NULL,
-  `trainer` int(11),
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1  ;
--- --------------------------------------------------------
+ALTER TABLE ploeg ADD INDEX `heeft als trainer` (trainer_id), ADD CONSTRAINT `heeft als trainer` FOREIGN KEY (trainer_id) 
+REFERENCES persoon (id);
 
---
--- Tabelstructuur voor tabel `ploegpersoon`
---
-
-DROP TABLE IF EXISTS `ploegpersoon`;
-CREATE TABLE IF NOT EXISTS `ploegpersoon` (
-  `ploeg` int(11) NOT NULL ,
-  `speler` int(11) NOT NULL,
-  PRIMARY KEY (`speler`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1  ;
