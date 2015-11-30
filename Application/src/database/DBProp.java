@@ -9,8 +9,7 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 /**
- *
- * @author Katrien.Deleu
+sets the properties to get connection with the database
  */
 public class DBProp {
 
@@ -39,7 +38,7 @@ public class DBProp {
    }
 
    /**
-    * @return the dbUrl
+    @return the dbUrl
     */
    public static String getDbUrl() throws DBException {
       if (dbUrl == null) {
@@ -49,7 +48,7 @@ public class DBProp {
    }
 
    /**
-    * @return the driver
+    @return the driver
     */
    public static String getDriver() throws DBException {
       if (driver == null) {
@@ -59,7 +58,7 @@ public class DBProp {
    }
 
    /**
-    * @return the login
+    @return the login
     */
    public static String getLogin() throws DBException {
       if (login == null) {
@@ -69,7 +68,7 @@ public class DBProp {
    }
 
    /**
-    * @return the paswoord
+    @return the paswoord
     */
    public static String getPaswoord() throws DBException {
       if (paswoord == null) {

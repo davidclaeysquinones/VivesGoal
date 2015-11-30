@@ -8,15 +8,15 @@ package database;
 import exception.ApplicationException;
 import exception.DBException;
 import java.util.ArrayList;
-import databag.Categorie;
+import datatype.Categorie;
 import databag.PersoonBag;
 import databag.PloegBag;
 
 /**
- *
- * @author david
+ Main class to test the functions of the database
  */
 public class DBfuntionsTest {
+   
     public static void main(String args[]) {
         
        

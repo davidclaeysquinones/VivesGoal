@@ -10,7 +10,9 @@ import exception.DBException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
+/**
+Get connection with database
+ */
 public class ConnectionManager {
 
     public static Connection getConnection() throws DBException {

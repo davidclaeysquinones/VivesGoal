@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**
+Test conncection with database
+ */
 public class TEST_DB {
  public static void main(String args[]) {
  try (Connection conn = ConnectionManager.getConnection();) {

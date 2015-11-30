@@ -5,6 +5,7 @@
  */
 package databag;
 
+import datatype.Categorie;
 import exception.ApplicationException;
 
 /**
