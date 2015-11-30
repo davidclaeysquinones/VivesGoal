@@ -155,7 +155,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "select id, naam,categorie,trainer from ploeg where id = ?");) {
+            "select id, naam,niveau,trainer_id from ploeg where id = ?");) {
             stmt.setInt(1, id);
             // execute voert het SQL-statement uit
             stmt.execute();
@@ -168,7 +168,8 @@ public class dataDB {
                if (r.next()) {
                   k.setId(r.getInt("id"));
                   k.setNaam(r.getString("naam"));
-                  k.setCategorie(r.getString("categorie"));
+                  k.setCategorie(r.getString("niveau"));
+                  k.setTrainer(r.getInt("trainer_id"));
                   
                   returnPloeg = k;
                }
@@ -197,7 +198,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "select id, naam,categorie,trainer from ploeg where naam=?");) {
+            "select id, naam,niveau,trainer_id from ploeg where naam=?");) {
             stmt.setString(1, naam);
             // execute voert het SQL-statement uit
             stmt.execute();
@@ -210,7 +211,8 @@ public class dataDB {
                if (r.next()) {
                   k.setId(r.getInt("id"));
                   k.setNaam(r.getString("naam"));
-                  k.setCategorie(r.getString("categorie"));
+                  k.setCategorie(r.getString("niveau"));
+                  k.setTrainer(r.getInt("trainer_id"));
                   
                   returnPloeg = k;
                }
@@ -238,7 +240,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "select id, naam,categorie,trainer from ploeg where id = ?");) {
+            "select id, naam,niveau,trainer_id from ploeg where id = ?");) {
             stmt.setInt(1, p.getId());
             // execute voert het SQL-statement uit
             stmt.execute();
@@ -251,7 +253,7 @@ public class dataDB {
                if (r.next()) {
                   k.setId(r.getInt("id"));
                   k.setNaam(r.getString("naam"));
-                  k.setCategorie(r.getString("categorie"));
+                  k.setCategorie(r.getString("niveau"));
                   
                   returnPloeg = k;
                }
@@ -280,7 +282,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "select id, naam,categorie,trainer from ploeg");) {
+            "select id, naam,niveau,trainer_id from ploeg");) {
             
             // execute voert het SQL-statement uit
             stmt.execute();
@@ -292,7 +294,8 @@ public class dataDB {
                 if (r.next()) {
                   p.setId(r.getInt("id"));
                   p.setNaam(r.getString("naam"));
-                  p.setCategorie(r.getString("categorie"));
+                  p.setCategorie(r.getString("niveau"));
+                  p.setTrainer(r.getInt("trainer_id"));
                   
                   ploegen.add(p);
                }
@@ -420,7 +423,7 @@ public class dataDB {
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
-         try (PreparedStatement stmt = conn.prepareStatement("select id, naam, voornaam, geboortedatum, trainer from persoon where trainer=\"false\" and id in (select speler from ploegpersoon where ploeg in(select id from ploeg where naam='?')) order by naam,voornaam");) {
+         try (PreparedStatement stmt = conn.prepareStatement("select id, naam, voornaam, geboortedatum, isTrainer from persoon where trainer=\"false\" and id in (select speler from ploegpersoon where ploeg in(select id from ploeg where naam='?')) order by naam,voornaam");) {
             stmt.setString(1, ploegnaam);
             // execute voert elke sql-statement uit, executeQuery enkel de eenvoudige
             stmt.execute();
@@ -458,7 +461,7 @@ public class dataDB {
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
-         try (PreparedStatement stmt = conn.prepareStatement("select id, naam, voornaam, geboortedatum, trainer from persoon where trainer=\"false\" and ploeg_id=? order by naam,voornaam");) {
+         try (PreparedStatement stmt = conn.prepareStatement("select id, naam, voornaam, geboortedatum, isTrainer from persoon where trainer=\"false\" and ploeg_id=? order by naam,voornaam");) {
             stmt.setInt(1, id);
             // execute voert elke sql-statement uit, executeQuery enkel de eenvoudige
             stmt.execute();
@@ -497,7 +500,7 @@ public class dataDB {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.
             prepareStatement(
-               "select id,naam,voornaam,geboortedatum,trainer,opmerking from persoon where id in (select trainer from ploeg where id='?')");) {
+               "select id,naam,voornaam,geboortedatum,isTrainer,opmerking from persoon where id in (select trainer_id from ploeg where id='?')");) {
                // execute voert elke sql-statement uit, executeQuery enkel de eenvoudige
                stmt.execute();
                // result opvragen (en automatisch sluiten)
@@ -536,7 +539,7 @@ public class dataDB {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.
             prepareStatement(
-               "select id,naam,voornaam,geboortedatum,trainer,opmerking from persoon where id in (select trainer from ploeg where id in (select id from ploeg where naam='?'))");) {
+               "select id,naam,voornaam,geboortedatum,isTrainer,opmerking from persoon where id in (select trainer from ploeg where id in (select id from ploeg where naam='?'))");) {
                // execute voert elke sql-statement uit, executeQuery enkel de eenvoudige
                stmt.execute();
                // result opvragen (en automatisch sluiten)
@@ -678,14 +681,15 @@ public class dataDB {
       }
 
    }
-   //   debugged method
+  
+   //Ruben
    public void toevoegenPloeg(PloegBag p) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "INSERT INTO ploeg (`Naam`, `Categorie`, `trainer`) VALUES (?,?,?)");) {
+            "INSERT INTO ploeg (`naam`, `niveau`, `trainer_id`) VALUES (?,?,?)");) {
             stmt.setString(1, p.getNaam());
             stmt.setString(2, p.getCategorie().getTekst());
             stmt.setInt(3,p.getTrainer());
@@ -703,14 +707,15 @@ public class dataDB {
 
    }
 
+   //Ruben
    public void verwijderPloeg(PloegBag p) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=null where id=?" );) {
-             stmt.setInt(1, p.getId());
+            "update persoon set ploeg_id = NULL where ploeg_id = ?");) {
+            stmt.setInt(1, p.getId());      
             stmt.execute();      
          } 
           // preparedStatement opstellen (en automtisch sluiten)
@@ -731,14 +736,15 @@ public class dataDB {
 
    }
    
+   //Ruben
    public void verwijderPloeg(int ploegid) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=null where id=?" );) {
-             stmt.setInt(1, ploegid);
+            "update persoon set ploeg_id = NULL where ploeg_id = ?");) {
+            stmt.setInt(1, ploegid);      
             stmt.execute();      
          } 
           // preparedStatement opstellen (en automtisch sluiten)
@@ -759,14 +765,15 @@ public class dataDB {
 
    }
 
+   // Ruben
    public void verwijderPloeg(String naam) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=null where id in(select id from ploeg where naam=?)" );) {
-             stmt.setString(1, naam);
+            "update persoon set ploeg_id = NULL where ploeg in (select id from ploeg where naam=?)");) {
+            stmt.setString(1, naam);      
             stmt.execute();      
          } 
           // preparedStatement opstellen (en automtisch sluiten)
@@ -786,6 +793,7 @@ public class dataDB {
       }
 
    }
+// Ruben
 //   debugged
    public void verwijderAllePloegen() throws DBException {
 
@@ -793,7 +801,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=null ");) {
+            "update persoon set ploeg_id = NULL");) {
              
             stmt.execute();      
          } 
@@ -814,14 +822,13 @@ public class dataDB {
       }
 
    }
-//   debugged
    public void toevoegenSpelerPloeg(int ploegid,PersoonBag p) throws DBException
    {
        // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=? where id=?);");) {         
+            "update persoon set ploeg_id=? where id=?;");) {         
             stmt.setInt(1, ploegid);
             stmt.setInt(2, p.getId());
             
@@ -843,7 +850,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=(select id from ploeg where naam=?) where id=?);");) {         
+            "update persoon set ploeg_id=(select id from ploeg where naam=?) where id=?;");) {         
             stmt.setString(1, ploegnaam);
             stmt.setInt(2, p.getId());
             
@@ -865,7 +872,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=? where id=?);");) {         
+            "update persoon set ploeg_id=? where id=?;");) {         
             stmt.setInt(1, ploeg.getId());
             stmt.setInt(2, speler.getId());
             
@@ -873,11 +880,11 @@ public class dataDB {
 
             
          } catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag persoon) - statement"+ sqlEx);
+            throw new DBException("SQL-exception in toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
          throw new DBException(
-            "SQL-exception in toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag persoon) - connection"+ sqlEx);
+            "SQL-exception in toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) - connection"+ sqlEx);
       }
    }
    
@@ -888,7 +895,7 @@ public class dataDB {
          // preparedStatement opstellen (en automtisch sluiten)
         
           try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=null where id=?);");) {         
+            "update persoon set ploeg_id=null where id=?;");) {         
             stmt.setInt(1, id);
            
             
@@ -912,7 +919,7 @@ public class dataDB {
          // preparedStatement opstellen (en automtisch sluiten)
         
           try (PreparedStatement stmt = conn.prepareStatement(
-            "DELETE FROM ploegpersoon WHERE persoon='?'");) {
+            "update persoon set ploeg_id=null where id=?;");) {
             stmt.setInt(1, p.getId());
             // execute voert elke sql-statement uit, executeQuery enkel de select
             stmt.execute();
@@ -926,26 +933,10 @@ public class dataDB {
       }
    }
    
-   public void verwijderSpelerPloeg(String naam,String voornaam) throws DBException {
+   public void verwijderSpelerPloeg(String naam,String voornaam) throws DBException, ApplicationException {
 
-      // connectie tot stand brengen (en automatisch sluiten)
-      try (Connection conn = ConnectionManager.getConnection();) {
-         // preparedStatement opstellen (en automtisch sluiten)
-        
-          try (PreparedStatement stmt = conn.prepareStatement(
-            "DELETE FROM ploegpersoon WHERE persoon=(select id from persoon where naam='?' and voornaam='?')");) {
-            stmt.setString(1, naam);
-            stmt.setString(2, voornaam);
-            // execute voert elke sql-statement uit, executeQuery enkel de select
-            stmt.execute();
-         }
-          catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in verwijderSpelerPloeg(String naam,String voornaam) - statement"+ sqlEx);
-         }
-      } catch (SQLException sqlEx) {
-         throw new DBException(
-            "SQL-exception in verwijderSpelerPloeg(String naam,String voornaam)t - connection"+ sqlEx);
-      }
+        PersoonBag p = zoekPersoon(naam,voornaam);
+        verwijderSpelerPloeg(p);
    }
    
    public void toevoegenTrainerPloeg(int persoonid,int ploegid) throws DBException
@@ -954,7 +945,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "UPDATE ploeg set trainer='?' where id='?'");) {
+            "UPDATE ploeg set trainer_id='?' where id='?'");) {
             stmt.setInt(1, persoonid);
             stmt.setInt(2, ploegid);
             
@@ -976,7 +967,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "UPDATE ploeg set trainer='?' where id='?'");) {
+            "UPDATE ploeg set trainer_id='?' where id='?'");) {
             stmt.setInt(1, persoon.getId());
             stmt.setInt(2, ploeg.getId());
             
@@ -991,27 +982,11 @@ public class dataDB {
             "SQL-exception in toevoegenTrainerPloeg(PersoonBag persoon,PloegBag ploeg) - connection"+ sqlEx);
       }
    }
-   public void toevoegenTrainerPloeg(String naam, String voornaam,String ploegnaam) throws DBException
+   public void toevoegenTrainerPloeg(String naam, String voornaam,String ploegnaam) throws DBException, ApplicationException
    {
-        // connectie tot stand brengen (en automatisch sluiten)
-      try (Connection conn = ConnectionManager.getConnection();) {
-         // preparedStatement opstellen (en automtisch sluiten)
-         try (PreparedStatement stmt = conn.prepareStatement(
-            "UPDATE ploeg set trainer=(select id from persoon where naam='?' and voornaam='?') where id=(select id from ploeg where naam='?')");) {
-            stmt.setString(1, naam);
-            stmt.setString(2, voornaam);
-            stmt.setString(3, ploegnaam);
-            
-            stmt.execute();
-
-            
-         } catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in toevoegenTrainerPloeg(String naam, String voornaam,String ploegnaam) - statement"+ sqlEx);
-         }
-      } catch (SQLException sqlEx) {
-         throw new DBException(
-            "SQL-exception in toevoegenTrainerPloeg(String naam, String voornaam,String ploegnaam) - connection"+ sqlEx);
-      }
+      PersoonBag persoon =zoekPersoon(naam,voornaam);
+      PloegBag ploeg = zoekPloeg(ploegnaam);
+      toevoegenTrainerPloeg(persoon,ploeg);
    }
    
    public void verwijderTrainerPloeg(int ploegid)throws DBException
@@ -1021,7 +996,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "UPDATE ploeg set trainer=null where id=?");) {
+            "UPDATE ploeg set trainer_id=null where id=?");) {
             stmt.setInt(1, ploegid);
             
             stmt.execute();
@@ -1043,7 +1018,7 @@ public class dataDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "UPDATE ploeg set trainer=null where naam=?");) {
+            "UPDATE ploeg set trainer_id=null where naam=?");) {
             stmt.setString(1, ploegnaam);
             
             stmt.execute();
