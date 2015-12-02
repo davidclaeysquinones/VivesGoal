@@ -6,7 +6,7 @@ package exception;
 
 /**
  *
- * @author Katrien
+ Occurs when there is a problem with the database
  */
 public class DBException extends Exception {
 

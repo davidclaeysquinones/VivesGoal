@@ -6,7 +6,7 @@ package exception;
 
 /**
  *
- * @author Katrien
+ Occurs when there is some error with the data itself
  */
 public class ApplicationException extends Exception {
 

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import datatype.Categorie;
 import databag.PersoonBag;
 import databag.PloegBag;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  Main class to test the functions of the database
@@ -131,14 +133,38 @@ public class DBfuntionsTest {
             database.toevoegenSpelerPloeg(p,database.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
             System.out.println("toevoegen spelers aan ploeg"+"\n");
         }
-        catch ( DBException|ApplicationException
-                e)
+        catch ( DBException|ApplicationException e)
         {
             System.out.println("fout bij toevoegen speler "+e.getMessage());
         }
         
-        
+        try{
+            database.toevoegenTrainerPloeg(drie.getNaam(),drie.getVoornaam(),ploeg.getNaam());
+            System.out.println("toevoegen trainer aan ploeg"+"\n");
+        }
+        catch ( DBException|ApplicationException e)
+        {
+            System.out.println("fout bij toevoegen trainer "+e.getMessage());
+        }
      
+        try{
+            database.verwijderSpelerPloeg(een.getNaam(),een.getVoornaam());
+            System.out.println("ontkoppelen speler van ploeg"+"\n");
+        }
+        catch ( DBException|ApplicationException e)
+        {
+            System.out.println("fout bij ontkoppelen speler "+e.getMessage());
+        }
+        
+        try{
+            database.verwijderTrainerPloeg(ploeg.getNaam());
+            System.out.println("ontkoppelen trainer van ploeg"+"\n");
+        }
+        catch ( DBException|ApplicationException e)
+        {
+            System.out.println("fout bij ontkoppelen trainer "+e.getMessage());
+        }
+        
           
        ArrayList ploegen = new ArrayList(); 
         try {
@@ -190,11 +216,12 @@ public class DBfuntionsTest {
                 System.out.println("verwijderen spelers"+"\n");
             }
         }
-        catch(DBException   e1)
+        catch(DBException|ApplicationException e1   )
         {
             System.out.println("fout bij verwijderen speler"+e1.getMessage());
+        }  
         }
-        }
+        
         
         
         

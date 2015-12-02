@@ -5,24 +5,50 @@
  */
 package datatype;
 
-import java.util.ArrayList;
+
 
 /**
  *
  * @author david
  */
 public class Ploeg {
-    private ArrayList<Persoon> spelers;
-    private Persoon trainer;
-    
-    
+    private String naam;
+    private Categorie categorie;
+
+    public Ploeg(String naam,Categorie categorie)
+    {
+        this.naam=naam;
+        this.categorie=categorie;
+    }
     public Ploeg()
     {
-        spelers=new ArrayList<>();
+        
     }
-    
-    public Ploeg(Persoon trainer)
-    {
-        this.trainer=trainer;
+    /**
+     * @return the naam
+     */
+    public String getNaam() {
+        return naam;
+    }
+
+    /**
+     * @param naam the naam to set
+     */
+    public void setNaam(String naam) {
+        this.naam = naam;
+    }
+
+    /**
+     * @return the categorie
+     */
+    public Categorie getCategorie() {
+        return categorie;
+    }
+
+    /**
+     * @param categorie the categorie to set
+     */
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
     }
 }
