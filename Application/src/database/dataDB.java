@@ -751,7 +751,7 @@ public class dataDB {
       }
 
    }
-   public void toevoegenSpelerPloeg(int ploegid,PersoonBag p) throws DBException
+   public void toevoegenSpelerPloeg(int ploegid,PersoonBag p) throws DBException, ApplicationException
    {
        // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -764,7 +764,12 @@ public class dataDB {
             stmt.execute();
 
             
-         } catch (SQLException sqlEx) {
+         }catch(NullPointerException e)
+         {
+             throw new ApplicationException("De opgegeven persoon of ploeg bestaat niet");
+         }
+         
+         catch (SQLException sqlEx) {
             throw new DBException("SQL-exception in toevoegenSpelerPloeg(int ploegid,PersoonBag p) - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
@@ -773,7 +778,7 @@ public class dataDB {
       }
    }
 //   debugged
-   public void toevoegenSpelerPloeg(String ploegnaam,PersoonBag p) throws DBException
+   public void toevoegenSpelerPloeg(String ploegnaam,PersoonBag p) throws DBException, ApplicationException
    {
        // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -786,7 +791,12 @@ public class dataDB {
             stmt.execute();
 
             
-         } catch (SQLException sqlEx) {
+         }catch(NullPointerException e)
+         {
+             throw new ApplicationException("De opgegeven persoon of ploeg bestaat niet");
+         } 
+         
+         catch (SQLException sqlEx) {
             throw new DBException("SQL-exception in toevoegenSpelerPloeg(String naam,PersoonBag p) - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
@@ -795,26 +805,9 @@ public class dataDB {
       }
    }
 //   debugged
-   public void toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) throws DBException
+   public void toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) throws DBException,ApplicationException
    {
-       // connectie tot stand brengen (en automatisch sluiten)
-      try (Connection conn = ConnectionManager.getConnection();) {
-         // preparedStatement opstellen (en automtisch sluiten)
-         try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=? where id=?;");) {         
-            stmt.setInt(1, ploeg.getId());
-            stmt.setInt(2, speler.getId());
-            
-            stmt.execute();
-
-            
-         } catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) - statement"+ sqlEx);
-         }
-      } catch (SQLException sqlEx) {
-         throw new DBException(
-            "SQL-exception in toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) - connection"+ sqlEx);
-      }
+       toevoegenSpelerPloeg(ploeg.getId(),speler);
    }
    
    public void verwijderSpelerPloeg(int id) throws DBException {

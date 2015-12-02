@@ -5,7 +5,6 @@
  */
 package transactie;
 
-import databag.PloegBag;
 import datatype.Ploeg;
 import database.dataDB;
 import exception.ApplicationException;
