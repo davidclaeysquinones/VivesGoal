@@ -26,33 +26,21 @@ public class PloegTrans implements PloegTransInterface{
                 }
         else
         {
-            PloegBag ploeg=convertPloegToPloegBag(p);
-            database.toevoegenPloeg(ploeg);
-            return database.zoekPloeg(ploeg).getId();
+            database.toevoegenPloeg(p.convertPloegToPloegBag());
+            return database.zoekPloeg(p.convertPloegToPloegBag()).getId();
         }
             
     }
 
     @Override
     public void trainerVerwijderenVanPloeg(int ploegId) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        database.verwijderPloeg(ploegId);
     }
 
     @Override
     public void trainerKoppelenAanPloeg(int trainerId, int ploegId) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        database.toevoegenTrainerPloeg(trainerId, ploegId);
     }
     
-    private PloegBag convertPloegToPloegBag(Ploeg p)
-    {
-        PloegBag ploegbag=new PloegBag();
-        ploegbag.setNaam(p.getNaam());
-        ploegbag.setCategorie(p.getCategorie());
-        return ploegbag;
-    }
-    private Ploeg convertPloegBagToPloeg(PloegBag p)
-    {
-        Ploeg ploeg = new Ploeg(p.getNaam(),p.getCategorie());
-        return ploeg;
-    }
+   
 }

@@ -5,6 +5,8 @@
  */
 package datatype;
 
+import databag.PloegBag;
+
 
 
 /**
@@ -51,4 +53,13 @@ public class Ploeg {
     public void setCategorie(Categorie categorie) {
         this.categorie = categorie;
     }
+    
+     public PloegBag convertPloegToPloegBag()
+    {
+        PloegBag ploegbag=new PloegBag();
+        ploegbag.setNaam(getNaam());
+        ploegbag.setCategorie(getCategorie());
+        return ploegbag;
+    }
+    
 }

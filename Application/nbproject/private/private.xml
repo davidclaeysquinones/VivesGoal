@@ -3,21 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/database/ConnectionManager.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/transactie/PersoonTransInterface.java</file>
+            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/databag/PersoonBag.java</file>
             <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/datatype/Persoon.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/database/Objectgeoriënteerd.java</file>
             <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/datatype/Ploeg.java</file>
             <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/transactie/PloegTransInterface.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/database/dataDB.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/datatype/Categorie.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/exception/ApplicationException.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/transactie/VivesGoal.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/databag/PersoonBag.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/databag/PloegBag.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/database/DBProp.java</file>
+            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/transactie/PloegTrans.java</file>
             <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/database/DBfuntionsTest.java</file>
-            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/database/TEST_DB.java</file>
+            <file>file:/C:/Users/david/Documents/2de%20jaar/Programming%20-%20Practicum/studieprogramma/VivesGoal/src/database/dataDB.java</file>
         </group>
     </open-files>
 </project-private>

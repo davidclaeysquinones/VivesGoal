@@ -6,6 +6,7 @@
 package databag;
 
 import datatype.Categorie;
+import datatype.Ploeg;
 import exception.ApplicationException;
 
 /**
@@ -78,4 +79,11 @@ public class PloegBag {
         String output ="id : "+id+" naam : "+naam;
         return output;
     }
+    
+    public Ploeg convertPloegBagToPloeg()
+    {
+        Ploeg ploeg = new Ploeg(getNaam(),getCategorie());
+        return ploeg;
+    }
+    
 }
