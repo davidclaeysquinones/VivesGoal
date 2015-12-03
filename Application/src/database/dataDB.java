@@ -776,6 +776,7 @@ public class dataDB {
    
    public void toevoegenSpelerPloeg(int ploegid,PersoonBag p) throws DBException, ApplicationException
    {
+      
        // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
@@ -830,6 +831,7 @@ public class dataDB {
 //   debugged
    public void toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) throws DBException,ApplicationException
    {
+        ;
        toevoegenSpelerPloeg(ploeg.getId(),speler);
    }
    
