@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import datatype.Categorie;
 import databag.PersoonBag;
 import databag.PloegBag;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  Main class to test the functions of the database
@@ -84,6 +82,7 @@ public class DBfuntionsTest {
         try{
             speler=database.zoekAlleSpelers();
             trainer=database.zoekAlleTrainers();
+            System.out.println("Spelers en trainers opslaan in apparte ArrayList"+"\n");
         }
         catch(DBException | ApplicationException  e1)
         {

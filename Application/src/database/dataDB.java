@@ -247,7 +247,7 @@ public class dataDB {
    }
    
    // debugged method
-   public ArrayList<PersoonBag> zoekAlleTrainers() throws DBException {
+   public ArrayList<PersoonBag> zoekAlleTrainers() throws DBException, ApplicationException {
 
       ArrayList<PersoonBag> kl = new ArrayList<>();
       // connectie tot stand brengen (en automatisch sluiten)
@@ -275,7 +275,12 @@ public class dataDB {
                      kl.add(k);
                   }
                   
-               } catch (SQLException sqlEx) {
+               }catch(NullPointerException e)
+               {
+                   throw new ApplicationException("Er werden geen trainers gevonden");
+               }
+               
+               catch (SQLException sqlEx) {
                   throw new DBException(
                      "SQL-exception in zoekAlleTrainers - resultset"+ sqlEx);
                }
@@ -810,7 +815,7 @@ public class dataDB {
        toevoegenSpelerPloeg(ploeg.getId(),speler);
    }
    
-   public void verwijderSpelerPloeg(int id) throws DBException {
+   public void verwijderSpelerPloeg(int id) throws DBException, ApplicationException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -824,7 +829,12 @@ public class dataDB {
             stmt.execute();
 
             
+         }catch(NullPointerException e)
+         {
+             throw new ApplicationException("De speler werd niet teruggevonden"+e.getMessage());
          }
+          
+          
           catch (SQLException sqlEx) {
             throw new DBException("SQL-exception in verwijderSpelerPloeg(int id) - statement"+ sqlEx);
          }
@@ -834,25 +844,8 @@ public class dataDB {
       }
    }
    
-   public void verwijderSpelerPloeg(PersoonBag p) throws DBException {
-
-      // connectie tot stand brengen (en automatisch sluiten)
-      try (Connection conn = ConnectionManager.getConnection();) {
-         // preparedStatement opstellen (en automtisch sluiten)
-        
-          try (PreparedStatement stmt = conn.prepareStatement(
-            "update persoon set ploeg_id=null where id=?;");) {
-            stmt.setInt(1, p.getId());
-            // execute voert elke sql-statement uit, executeQuery enkel de select
-            stmt.execute();
-         }
-          catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in verwijderSpelerPloeg(PersoonBag p) - statement"+ sqlEx);
-         }
-      } catch (SQLException sqlEx) {
-         throw new DBException(
-            "SQL-exception in verwijderSpelerPloeg(PersoonBag p) - connection"+ sqlEx);
-      }
+   public void verwijderSpelerPloeg(PersoonBag p) throws DBException, ApplicationException {
+       verwijderSpelerPloeg(p.getId());
    }
    
    public void verwijderSpelerPloeg(String naam,String voornaam) throws DBException, ApplicationException {
@@ -861,7 +854,7 @@ public class dataDB {
         verwijderSpelerPloeg(p);
    }
    
-   public void toevoegenTrainerPloeg(int persoonid,int ploegid) throws DBException
+   public void toevoegenTrainerPloeg(int persoonid,int ploegid) throws DBException, ApplicationException
    {
         // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -874,7 +867,13 @@ public class dataDB {
             stmt.execute();
 
             
-         } catch (SQLException sqlEx) {
+         }catch(NullPointerException e)
+         {
+             throw new ApplicationException("De opgeven persoon of ploeg kon niet worden gevonden");
+         }
+         
+         
+         catch (SQLException sqlEx) {
             throw new DBException("SQL-exception in toevoegenTrainerPloeg(int persoonid,int ploegid) - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
@@ -883,7 +882,7 @@ public class dataDB {
       }
    }
    
-   public void toevoegenTrainerPloeg(PersoonBag persoon,PloegBag ploeg) throws DBException
+   public void toevoegenTrainerPloeg(PersoonBag persoon,PloegBag ploeg) throws DBException, ApplicationException
    {
         // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -896,7 +895,13 @@ public class dataDB {
             stmt.execute();
 
             
-         } catch (SQLException sqlEx) {
+         }catch(NullPointerException e)
+         {
+             throw new ApplicationException("De opgeven persoon of ploeg kon niet worden gevonden");
+         } 
+         
+         
+         catch (SQLException sqlEx) {
             throw new DBException("SQL-exception in toevoegenTrainerPloeg(PersoonBag persoon,PloegBag ploeg) - statement"+ sqlEx);
          }
       } catch (SQLException sqlEx) {
@@ -924,7 +929,9 @@ public class dataDB {
             stmt.execute();
 
             
-         } catch(NullPointerException e)
+         }
+         
+         catch(NullPointerException e)
          {
              throw new ApplicationException("De opgegeven ploeg werd niet gevonden "+e.getMessage());
          }
