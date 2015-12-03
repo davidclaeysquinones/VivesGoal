@@ -622,18 +622,34 @@ public class dataDB {
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
-         try (PreparedStatement stmt = conn.prepareStatement(
-            "INSERT INTO ploeg (`naam`, `niveau`, `trainer_id`) VALUES (?,?,?)");) {
-            stmt.setString(1, p.getNaam());
-            stmt.setString(2, p.getCategorie().getTekst());
-            stmt.setInt(3,p.getTrainer());
+            if(p.getTrainer()!=0)
+            {
+                 try (PreparedStatement stmt = conn.prepareStatement(
+                "INSERT INTO ploeg (`naam`, `niveau`, `trainer_id`) VALUES (?,?,?)");) {
+                 stmt.setString(1, p.getNaam());
+                 stmt.setString(2, p.getCategorie().getTekst());
+                 stmt.setInt(3,p.getTrainer());
             
-            stmt.execute();
-
+                 stmt.execute();
+                }catch (SQLException sqlEx) {
+                   throw new DBException("SQL-exception in toevoegenPloeg(PloegBag p) - statement"+ sqlEx);
+                }
+            }
+            else
+            {
+                 try (PreparedStatement stmt = conn.prepareStatement(
+                "INSERT INTO ploeg (`naam`, `niveau`) VALUES (?,?)");) {
+                 stmt.setString(1, p.getNaam());
+                 stmt.setString(2, p.getCategorie().getTekst());
+                 
             
-         } catch (SQLException sqlEx) {
-            throw new DBException("SQL-exception in toevoegenPloeg(PloegBag p) - statement"+ sqlEx);
-         }
+                 stmt.execute();
+                }catch (SQLException sqlEx) {
+                   throw new DBException("SQL-exception in toevoegenPloeg(PloegBag p) - statement"+ sqlEx);
+                }
+            }
+            
+          
       } catch (SQLException sqlEx) {
          throw new DBException(
             "SQL-exception in toevoegenPloeg(PloegBag p) - connection"+ sqlEx);
@@ -756,6 +772,8 @@ public class dataDB {
       }
 
    }
+   
+   
    public void toevoegenSpelerPloeg(int ploegid,PersoonBag p) throws DBException, ApplicationException
    {
        // connectie tot stand brengen (en automatisch sluiten)

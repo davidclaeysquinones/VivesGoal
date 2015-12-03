@@ -252,7 +252,8 @@ public class DBfuntionsTest {
         {
             System.out.println("fout bij verwijderen trainer"+e.getMessage());
         }
-  
+        
+     
     }
     
 

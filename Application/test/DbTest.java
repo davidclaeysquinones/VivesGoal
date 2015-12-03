@@ -8,17 +8,13 @@ import databag.PersoonBag;
 import databag.PloegBag;
 import database.dataDB;
 import datatype.Categorie;
-import exception.ApplicationException;
-import exception.DBException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
 
 /**
  *
@@ -61,7 +57,6 @@ public class DbTest {
        
         een.setGeboortedatum(1995,4,13);
        
-        System.out.println(een.getGeboortedatum());
         een.setTrainer(false);
       
         
@@ -155,7 +150,6 @@ public class DbTest {
         
         PersoonBag p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
         ploeg.setTrainer(p.getId());
-        System.out.println("\n"+"instellen trainer"+"\n");
          
          database.toevoegenPloeg(ploeg); 
        
@@ -190,7 +184,7 @@ public class DbTest {
        PloegBag ploeg;
         
         ploeg = database.zoekPloeg("los papis");
-        database.toevoegenTrainerPloeg(drie, ploeg);
+        database.toevoegenTrainerPloeg(database.zoekPersoon("Chulito", "Rubensito"), ploeg);
        
     }
     
@@ -214,7 +208,7 @@ public class DbTest {
        
         database.toevoegenSpelerPloeg(database.zoekPloeg(ploeg.getNaam()),database.zoekPersoon(een.getNaam(), een.getVoornaam()));
         PloegBag p=database.zoekPloeg(ploeg.getNaam());
-        database.toevoegenSpelerPloeg(ploeg,database.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
+        database.toevoegenSpelerPloeg(p,database.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
         
         
     }
@@ -236,5 +230,26 @@ public class DbTest {
         
     }
     
+    @Test
+    public void verwijderAllePersonen() throws Exception
+    {
+        ArrayList spelers = database.zoekAlleSpelers();
+        ArrayList trainers=database.zoekAlleTrainers();
+        
+        for(int i = 0;i<spelers.size();i++)
+        {
+            database.verwijderPersoon((PersoonBag) spelers.get(i));
+        }
+        
+        for(int i = 0;i<spelers.size();i++)
+        {
+            database.verwijderPersoon((PersoonBag) trainers.get(i));
+        }
+    }
     
+    @Test 
+    public void verwijderAllePloegen() throws Exception
+    {
+        database.verwijderAllePloegen();
+    }
 }
