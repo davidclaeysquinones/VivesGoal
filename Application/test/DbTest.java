@@ -6,6 +6,7 @@
 
 import databag.Persoon;
 import databag.Ploeg;
+import database.PersoonDB;
 import database.PloegDB;
 import datatype.Categorie;
 import exception.ApplicationException;
@@ -24,7 +25,8 @@ import org.junit.Test;
  */
 
 public class DbTest {
-    private PloegDB database;
+    private PloegDB ploegDB;
+    private PersoonDB persoonDB;
     public DbTest() {
     }
     
@@ -38,24 +40,25 @@ public class DbTest {
     
     @Before
     public void setUp() {
-        database=new PloegDB();
+        ploegDB=new PloegDB();
+        persoonDB=new PersoonDB();
     }
     
     @After
     public void tearDown() throws DBException, ApplicationException {
         
-        database.verwijderAllePloegen();
-        ArrayList spelers = database.zoekAlleSpelers();
-        ArrayList trainers= database.zoekAlleTrainers();
+        ploegDB.verwijderAllePloegen();
+        ArrayList spelers = persoonDB.zoekAlleSpelers();
+        ArrayList trainers= persoonDB.zoekAlleTrainers();
         
         for(int i = 0;i<spelers.size();i++)
         {
-            database.verwijderPersoon((Persoon) spelers.get(i));
+            persoonDB.verwijderPersoon((Persoon) spelers.get(i));
         }
         
         for(int i = 0;i<trainers.size();i++)
         {
-            database.verwijderPersoon((Persoon) trainers.get(i));
+            persoonDB.verwijderPersoon((Persoon) trainers.get(i));
         }
     }
 
@@ -93,10 +96,10 @@ public class DbTest {
         vier.setGeboortedatum(1979,6,2);
         vier.setTrainer(true);
                 
-        database.toevoegenPersoon(een);
-        database.toevoegenPersoon(twee);
-        database.toevoegenPersoon(drie);
-        database.toevoegenPersoon(vier);
+        persoonDB.toevoegenPersoon(een);
+        persoonDB.toevoegenPersoon(twee);
+        persoonDB.toevoegenPersoon(drie);
+        persoonDB.toevoegenPersoon(vier);
            
     }
     
@@ -107,8 +110,8 @@ public class DbTest {
         ArrayList speler=new ArrayList();
         ArrayList trainer=new ArrayList();
         
-        speler=database.zoekAlleSpelers();
-        trainer=database.zoekAlleTrainers();
+        speler=persoonDB.zoekAlleSpelers();
+        trainer=persoonDB.zoekAlleTrainers();
        
       
     }
@@ -117,7 +120,7 @@ public class DbTest {
     public void afdrukkenSpelers() throws Exception
     {
          ArrayList speler=new ArrayList();
-         speler=database.zoekAlleSpelers();
+         speler=persoonDB.zoekAlleSpelers();
              
         System.out.println("Spelers");
         for (int i=0;i<speler.size();i++) {
@@ -131,7 +134,7 @@ public class DbTest {
     {
         ArrayList trainer;
         
-        trainer=database.zoekAlleTrainers();     
+        trainer=persoonDB.zoekAlleTrainers();     
       
         System.out.println("\n"+"Trainers");
         for(int i=0;i<trainer.size();i++)
@@ -152,16 +155,16 @@ public class DbTest {
        
         drie.setTrainer(true);
         
-        database.toevoegenPersoon(drie);
+        persoonDB.toevoegenPersoon(drie);
         
         Ploeg ploeg=new Ploeg();
         ploeg.setNaam("los papis");
         ploeg.setCategorie(Categorie.U6);
         
-        Persoon p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
+        Persoon p = persoonDB.zoekPersoon(drie.getNaam(),drie.getVoornaam());
         ploeg.setTrainer(p.getId());
          
-         database.toevoegenPloeg(ploeg); 
+         ploegDB.toevoegenPloeg(ploeg); 
        
        
     }
@@ -173,7 +176,7 @@ public class DbTest {
         ploeg.setNaam("los papasitos");
         ploeg.setCategorie(Categorie.U6);
        
-        database.toevoegenPloeg(ploeg);
+        ploegDB.toevoegenPloeg(ploeg);
         
         
     }
@@ -184,7 +187,7 @@ public class DbTest {
         Ploeg ploeg = new Ploeg();
         ploeg.setCategorie(Categorie.U7);
         ploeg.setNaam("los chungitos");
-        database.toevoegenPloeg(ploeg);
+        ploegDB.toevoegenPloeg(ploeg);
         Persoon drie=new Persoon();
         drie.setVoornaam("Rubensito");
         drie.setNaam("Chulito");
@@ -193,11 +196,11 @@ public class DbTest {
         
         drie.setTrainer(true);
         
-        database.toevoegenPersoon(drie);
+        persoonDB.toevoegenPersoon(drie);
     
         
-        ploeg = database.zoekPloeg("los chungitos");
-        database.toevoegenTrainerPloeg(database.zoekPersoon("Chulito", "Rubensito"), ploeg);
+        ploeg = ploegDB.zoekPloeg("los chungitos");
+        ploegDB.toevoegenTrainerPloeg(persoonDB.zoekPersoon("Chulito", "Rubensito"), ploeg);
       
        
     }
@@ -216,19 +219,19 @@ public class DbTest {
         twee.setNaam("Claesita");
         twee.setGeboortedatum(1966, 5, 12);
         
-        database.toevoegenPersoon(een);
-        database.toevoegenPersoon(twee);
+        persoonDB.toevoegenPersoon(een);
+        persoonDB.toevoegenPersoon(twee);
      
         
         Ploeg ploeg=new Ploeg();
         ploeg.setNaam("markisito");
         ploeg.setCategorie(Categorie.U11);
         
-        database.toevoegenPloeg(ploeg);
+        ploegDB.toevoegenPloeg(ploeg);
        
-        database.toevoegenSpelerPloeg(database.zoekPloeg(ploeg.getNaam()),database.zoekPersoon(een.getNaam(), een.getVoornaam()));
+        ploegDB.toevoegenSpelerPloeg(ploegDB.zoekPloeg(ploeg.getNaam()),persoonDB.zoekPersoon(een.getNaam(), een.getVoornaam()));
        
-        database.toevoegenSpelerPloeg(database.zoekPloeg(ploeg.getNaam()),database.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
+        ploegDB.toevoegenSpelerPloeg(ploegDB.zoekPloeg(ploeg.getNaam()),persoonDB.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
         
         
     }
@@ -242,7 +245,7 @@ public class DbTest {
         een.setGeboortedatum(1995,4,13);
         een.setTrainer(false);
         
-        database.toevoegenPersoon(een);
+        persoonDB.toevoegenPersoon(een);
        
        
         
@@ -250,12 +253,12 @@ public class DbTest {
         ploeg.setNaam("apllesito");
         ploeg.setCategorie(Categorie.U8);
         
-        database.toevoegenPloeg(ploeg);
+        ploegDB.toevoegenPloeg(ploeg);
         
 //        
-        database.toevoegenSpelerPloeg(database.zoekPloeg(ploeg.getNaam()), database.zoekPersoon(een.getNaam(),een.getVoornaam()));
+        ploegDB.toevoegenSpelerPloeg(ploegDB.zoekPloeg(ploeg.getNaam()), persoonDB.zoekPersoon(een.getNaam(),een.getVoornaam()));
        
-        database.verwijderSpelerPloeg(een.getNaam(),een.getVoornaam());
+        ploegDB.verwijderSpelerPloeg(een.getNaam(),een.getVoornaam());
         
         
     }
@@ -263,24 +266,24 @@ public class DbTest {
     @Test
     public void verwijderAllePersonen() throws Exception
     {
-        ArrayList spelers = database.zoekAlleSpelers();
-        ArrayList trainers= database.zoekAlleTrainers();
+        ArrayList spelers = persoonDB.zoekAlleSpelers();
+        ArrayList trainers= persoonDB.zoekAlleTrainers();
         
         for(int i = 0;i<spelers.size();i++)
         {
-            database.verwijderPersoon((Persoon) spelers.get(i));
+            persoonDB.verwijderPersoon((Persoon) spelers.get(i));
         }
         
         for(int i = 0;i<trainers.size();i++)
         {
-            database.verwijderPersoon((Persoon) trainers.get(i));
+            persoonDB.verwijderPersoon((Persoon) trainers.get(i));
         }
     }
     
     @Test 
     public void verwijderAllePloegen() throws Exception
     {
-        database.verwijderAllePloegen();
+        ploegDB.verwijderAllePloegen();
     }
     
 }

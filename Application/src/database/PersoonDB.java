@@ -31,7 +31,7 @@ public class PersoonDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "select id, naam, voornaam, geboortedatum, isTrainer,opmerking from persoon where id=?");) {
+            "select id, naam, voornaam, geboortedatum, isTrainer,opmerking,trainer_id from persoon where id=?");) {
             stmt.setInt(1, id);
             // execute voert het SQL-statement uit
             stmt.execute();
@@ -48,6 +48,7 @@ public class PersoonDB {
                   k.setGeboortedatum(r.getDate("geboortedatum"));
                   k.setTrainer(r.getBoolean("isTrainer"));
                   k.setOpmerking(r.getString("opmerking"));
+                  k.setPloegid(r.getInt("trainer_id"));
                   returnPersoon = k;
                }
 
@@ -74,7 +75,7 @@ public class PersoonDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "select id, naam, voornaam, geboortedatum, isTrainer,opmerking from persoon where voornaam =? and naam=?");) {
+            "select id, naam, voornaam, geboortedatum, isTrainer,opmerking,trainer_id from persoon where voornaam =? and naam=?");) {
             stmt.setString(1,voornaam );
             stmt.setString(2, naam);
              
@@ -93,6 +94,7 @@ public class PersoonDB {
                   k.setGeboortedatum(r.getDate("geboortedatum"));
                   k.setTrainer(r.getBoolean("isTrainer"));
                   k.setOpmerking(r.getString("opmerking"));
+                  k.setPloegid(r.getInt("trainer_id"));
                   returnPersoon = k;
                }
 
@@ -365,12 +367,13 @@ public class PersoonDB {
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
          try (PreparedStatement stmt = conn.prepareStatement(
-            "INSERT INTO `persoon` (Naam, Voornaam, Geboortedatum, isTrainer, Opmerking) VALUES (?,?,?,?,?);");) {
+            "INSERT INTO `persoon` (Naam, Voornaam, Geboortedatum, isTrainer, Opmerking,ploeg_id) VALUES (?,?,?,?,?,?);");) {
             stmt.setString(1, p.getNaam());
             stmt.setString(2, p.getVoornaam());
             stmt.setDate(3,new java.sql.Date(p.getGeboortedatum().getTime()) );
             stmt.setBoolean(4, p.getTrainer());
             stmt.setString(5,p.getOpmerking());
+            stmt.setInt(6, p.getPloegid());
             stmt.execute();
 
             

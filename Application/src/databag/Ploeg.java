@@ -16,7 +16,8 @@ public class Ploeg {
     private int id;
     private String naam;
     private Categorie categorie;
-    private int trainer;
+    private Integer trainer;
+    
     
     public int getId()
     {
@@ -33,7 +34,7 @@ public class Ploeg {
         return categorie;
     }
     
-    public int getTrainer()
+    public Integer getTrainer()
     {
         return trainer;
     }

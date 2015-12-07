@@ -20,6 +20,15 @@ public class Persoon {
     private Date geboortedatum;
     private boolean trainer;
     private String opmerking;
+    private Integer ploegid;
+
+    public Integer getPloegid() {
+        return ploegid;
+    }
+
+    public void setPloegid(Integer ploegid) {
+        this.ploegid = ploegid;
+    }
     
 
     // defaultconstructor

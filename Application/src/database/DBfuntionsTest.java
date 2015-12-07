@@ -65,13 +65,14 @@ public class DBfuntionsTest {
         
         ArrayList speler=new ArrayList();
         ArrayList trainer=new ArrayList();
-        PloegDB database = new PloegDB();
+        PloegDB ploegDB = new PloegDB();
+        PersoonDB persoonDB = new PersoonDB();
         
         try{
-            database.toevoegenPersoon(een);
-            database.toevoegenPersoon(twee);
-            database.toevoegenPersoon(drie);
-            database.toevoegenPersoon(vier);
+            persoonDB.toevoegenPersoon(een);
+            persoonDB.toevoegenPersoon(twee);
+            persoonDB.toevoegenPersoon(drie);
+            persoonDB.toevoegenPersoon(vier);
             
         }
         catch(DBException e)
@@ -80,8 +81,8 @@ public class DBfuntionsTest {
         }
         
         try{
-            speler=database.zoekAlleSpelers();
-            trainer=database.zoekAlleTrainers();
+            speler=persoonDB.zoekAlleSpelers();
+            trainer=persoonDB.zoekAlleTrainers();
             System.out.println("Spelers en trainers opslaan in apparte ArrayList"+"\n");
         }
         catch(DBException | ApplicationException  e1)
@@ -104,7 +105,7 @@ public class DBfuntionsTest {
         ploeg.setNaam("los papis");
         ploeg.setCategorie(Categorie.U6);
         try{
-            Persoon p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
+            Persoon p = persoonDB.zoekPersoon(drie.getNaam(),drie.getVoornaam());
             ploeg.setTrainer(p.getId());
             System.out.println("\n"+"instellen trainer"+"\n");
                   
@@ -118,7 +119,7 @@ public class DBfuntionsTest {
         
         
         try{
-            database.toevoegenPloeg(ploeg);
+            ploegDB.toevoegenPloeg(ploeg);
             System.out.println("ploeg toegevoegd"+"\n");  
         }
         catch ( DBException e)
@@ -127,9 +128,9 @@ public class DBfuntionsTest {
         }
         
         try{
-            database.toevoegenSpelerPloeg(database.zoekPloeg(ploeg.getNaam()),database.zoekPersoon(een.getNaam(), een.getVoornaam()));
-            Ploeg p=database.zoekPloeg(ploeg.getNaam());
-            database.toevoegenSpelerPloeg(p,database.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
+           ploegDB.toevoegenSpelerPloeg(ploegDB.zoekPloeg(ploeg.getNaam()),persoonDB.zoekPersoon(een.getNaam(), een.getVoornaam()));
+            Ploeg p=ploegDB.zoekPloeg(ploeg.getNaam());
+            ploegDB.toevoegenSpelerPloeg(p,persoonDB.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
             System.out.println("toevoegen spelers aan ploeg"+"\n");
         }
         catch ( DBException|ApplicationException e)
@@ -138,7 +139,7 @@ public class DBfuntionsTest {
         }
         
         try{
-            database.toevoegenTrainerPloeg(drie.getNaam(),drie.getVoornaam(),ploeg.getNaam());
+            ploegDB.toevoegenTrainerPloeg(drie.getNaam(),drie.getVoornaam(),ploeg.getNaam());
             System.out.println("toevoegen trainer aan ploeg"+"\n");
         }
         catch ( DBException|ApplicationException e)
@@ -147,7 +148,7 @@ public class DBfuntionsTest {
         }
      
         try{
-            database.verwijderSpelerPloeg(een.getNaam(),een.getVoornaam());
+            ploegDB.verwijderSpelerPloeg(een.getNaam(),een.getVoornaam());
             System.out.println("ontkoppelen speler van ploeg"+"\n");
         }
         catch ( DBException|ApplicationException e)
@@ -156,7 +157,7 @@ public class DBfuntionsTest {
         }
         
         try{
-            database.verwijderTrainerPloeg(ploeg.getNaam());
+            ploegDB.verwijderTrainerPloeg(ploeg.getNaam());
             System.out.println("ontkoppelen trainer van ploeg"+"\n");
         }
         catch ( DBException|ApplicationException e)
@@ -168,7 +169,7 @@ public class DBfuntionsTest {
        ArrayList ploegen = new ArrayList(); 
         try {
             
-            ploegen = database.zoekAllePloegen();
+            ploegen = ploegDB.zoekAllePloegen();
             System.out.println("Alle ploegen zoeken"+"\n");
         }
         catch(DBException|ApplicationException e)
@@ -177,7 +178,7 @@ public class DBfuntionsTest {
         } 
         
         try {
-            Ploeg p=database.zoekPloeg(ploeg.getNaam());
+            Ploeg p=ploegDB.zoekPloeg(ploeg.getNaam());
             System.out.println("opzoeken ploeg : "+p+"\n");
         }
         catch(DBException|ApplicationException e)
@@ -194,7 +195,7 @@ public class DBfuntionsTest {
             Persoon a = new Persoon();
             a.setNaam("Mano");
             a.setVoornaam("Lito");
-            database.wijzigenPersoon(een.getNaam(), een.getVoornaam(), a);
+            persoonDB.wijzigenPersoon(een.getNaam(), een.getVoornaam(), a);
             System.out.println("Wijzigen persoon"+"\n");
             
           
@@ -209,7 +210,7 @@ public class DBfuntionsTest {
         {
             Persoon a = (Persoon) speler.get(i);
             try{
-            database.verwijderPersoon(a.getId());
+            persoonDB.verwijderPersoon(a.getId());
             if(i==0)
             {
                 System.out.println("verwijderen spelers"+"\n");
@@ -228,7 +229,7 @@ public class DBfuntionsTest {
         {
             Persoon a = (Persoon) trainer.get(i);
             try{
-            database.verwijderPersoon(a.getNaam(),a.getVoornaam());
+            persoonDB.verwijderPersoon(a.getNaam(),a.getVoornaam());
             if(i==0)
             {
                 System.out.println("verwijderen trainers"+"\n");
@@ -245,7 +246,7 @@ public class DBfuntionsTest {
         
         
         try{
-            database.verwijderAllePloegen();
+            ploegDB.verwijderAllePloegen();
             System.out.println("Alle ploegen verwijderen");
         }
         catch ( DBException e)
