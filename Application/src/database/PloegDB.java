@@ -347,13 +347,15 @@ public class PloegDB {
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
-            if(p.getTrainer()!=0)
+            if(p.getTrainer()!=null)
             {
                  try (PreparedStatement stmt = conn.prepareStatement(
                 "INSERT INTO ploeg (`naam`, `niveau`, `trainer_id`) VALUES (?,?,?)");) {
                  stmt.setString(1, p.getNaam());
                  stmt.setString(2, p.getCategorie().getTekst());
-                 stmt.setInt(3,p.getTrainer());
+                 stmt.setInt(3,p.getTrainer()); 
+                 
+                 
             
                  stmt.execute();
                 }catch (SQLException sqlEx) {
