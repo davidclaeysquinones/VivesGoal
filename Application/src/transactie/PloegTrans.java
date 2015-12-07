@@ -6,7 +6,7 @@
 package transactie;
 
 import databag.Ploeg;
-import database.dataDB;
+import database.PloegDB;
 import exception.ApplicationException;
 
 
@@ -16,7 +16,7 @@ import exception.ApplicationException;
  */
 public class PloegTrans implements PloegTransInterface{
 
-   private dataDB database = new dataDB();
+   private PloegDB database = new PloegDB();
     @Override
     public Integer ploegToevoegen(Ploeg p) throws Exception {
         if(database.zoekPloeg(p.getNaam())!=null)

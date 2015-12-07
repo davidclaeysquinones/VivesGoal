@@ -6,7 +6,7 @@
 
 import databag.Persoon;
 import databag.Ploeg;
-import database.dataDB;
+import database.PloegDB;
 import datatype.Categorie;
 import exception.ApplicationException;
 import exception.DBException;
@@ -24,7 +24,7 @@ import org.junit.Test;
  */
 
 public class DbTest {
-    private dataDB database;
+    private PloegDB database;
     public DbTest() {
     }
     
@@ -38,7 +38,7 @@ public class DbTest {
     
     @Before
     public void setUp() {
-        database=new dataDB();
+        database=new PloegDB();
     }
     
     @After

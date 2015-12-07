@@ -65,7 +65,7 @@ public class DBfuntionsTest {
         
         ArrayList speler=new ArrayList();
         ArrayList trainer=new ArrayList();
-        dataDB database = new dataDB();
+        PloegDB database = new PloegDB();
         
         try{
             database.toevoegenPersoon(een);
