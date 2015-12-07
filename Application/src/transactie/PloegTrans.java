@@ -23,6 +23,11 @@ public class PloegTrans implements PloegTransInterface{
                 {
                     throw new ApplicationException("Deze ploeg bestaat al");
                 }
+        if(p.getCategorie()==null)
+        {
+            throw new ApplicationException("Elke ploeg moet een categorie hebben");
+        }   
+    
         else
         {
             database.toevoegenPloeg(p);
