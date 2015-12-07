@@ -19,8 +19,8 @@ public class dataDB {
    public dataDB() {
    }
    
-   public PersoonBag zoekPersoon(int id) throws DBException, ApplicationException {
-      PersoonBag returnPersoon = null;
+   public Persoon zoekPersoon(int id) throws DBException, ApplicationException {
+      Persoon returnPersoon = null;
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
@@ -31,8 +31,8 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van de persoon uit de database een PersoonBag-object maken
-               PersoonBag k = new PersoonBag();
+               // van de persoon uit de database een Persoon-object maken
+               Persoon k = new Persoon();
 
                // er werd een persoon gevonden
                if (r.next()) {
@@ -62,8 +62,8 @@ public class dataDB {
             "SQL-exception in zoekPersoon(int id)- connection");
       }
    }
-   public PersoonBag zoekPersoon(String naam,String voornaam) throws DBException, ApplicationException {
-      PersoonBag returnPersoon = null;
+   public Persoon zoekPersoon(String naam,String voornaam) throws DBException, ApplicationException {
+      Persoon returnPersoon = null;
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
@@ -76,8 +76,8 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van de persoon uit de database een PersoonBag-object maken
-               PersoonBag k = new PersoonBag();
+               // van de persoon uit de database een Persoon-object maken
+               Persoon k = new Persoon();
 
                // er werd een persoon gevonden
                if (r.next()) {
@@ -110,12 +110,12 @@ public class dataDB {
             "SQL-exception in zoekPersoon(String naam,String voornaam)t - connection");
       }
    }
-   public PersoonBag zoekPersoon(PersoonBag p) throws DBException, ApplicationException {
-      PersoonBag a=zoekPersoon(p.getId());
+   public Persoon zoekPersoon(Persoon p) throws DBException, ApplicationException {
+      Persoon a=zoekPersoon(p.getId());
       return a;
    }
-   public PloegBag zoekPloeg(int id) throws DBException, ApplicationException {
-      PloegBag returnPloeg = null;
+   public Ploeg zoekPloeg(int id) throws DBException, ApplicationException {
+      Ploeg returnPloeg = null;
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
@@ -126,8 +126,8 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van de ploeg uit de database een PloegBag-object maken
-               PloegBag k = new PloegBag();
+               // van de ploeg uit de database een Ploeg-object maken
+               Ploeg k = new Ploeg();
 
                // er werd een ploeg gevonden
                if (r.next()) {
@@ -157,8 +157,8 @@ public class dataDB {
       }
    }
  // debugged method
-   public PloegBag zoekPloeg(String naam) throws DBException, ApplicationException {
-      PloegBag returnPloeg = null;
+   public Ploeg zoekPloeg(String naam) throws DBException, ApplicationException {
+      Ploeg returnPloeg = null;
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
@@ -169,8 +169,8 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van de ploeg uit de database een PloegBag-object maken
-               PloegBag k = new PloegBag();
+               // van de ploeg uit de database een Ploeg-object maken
+               Ploeg k = new Ploeg();
 
                // er werd een ploeg gevonden
                if (r.next()) {
@@ -199,12 +199,12 @@ public class dataDB {
             "SQL-exception in zoekPloeg(String naam) - connection");
       }
    }
-   public PloegBag zoekPloeg(PloegBag p) throws DBException, ApplicationException {
-      PloegBag returnPloeg = zoekPloeg(p.getId());
+   public Ploeg zoekPloeg(Ploeg p) throws DBException, ApplicationException {
+      Ploeg returnPloeg = zoekPloeg(p.getId());
       return returnPloeg;
       
    }
-   public ArrayList<PloegBag> zoekAllePloegen()throws DBException,ApplicationException
+   public ArrayList<Ploeg> zoekAllePloegen()throws DBException,ApplicationException
    {
        ArrayList ploegen = new ArrayList();
       // connectie tot stand brengen (en automatisch sluiten)
@@ -219,7 +219,7 @@ public class dataDB {
             try (ResultSet r = stmt.getResultSet()) {
               for(int i=0;i<ploegen.size();i++)
               {
-                  PloegBag p=new PloegBag();
+                  Ploeg p=new Ploeg();
                 if (r.next()) {
                   p.setId(r.getInt("id"));
                   p.setNaam(r.getString("naam"));
@@ -247,9 +247,9 @@ public class dataDB {
    }
    
    // debugged method
-   public ArrayList<PersoonBag> zoekAlleTrainers() throws DBException, ApplicationException {
+   public ArrayList<Persoon> zoekAlleTrainers() throws DBException, ApplicationException {
 
-      ArrayList<PersoonBag> kl = new ArrayList<>();
+      ArrayList<Persoon> kl = new ArrayList<>();
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager
               .getConnection();) {
@@ -265,7 +265,7 @@ public class dataDB {
                   
                   while (r.next()) {
 
-                     PersoonBag k = new PersoonBag();
+                     Persoon k = new Persoon();
                      k.setId(r.getInt("id"));
                      k.setNaam(r.getString("naam"));
                      k.setVoornaam(r.getString("voornaam"));
@@ -297,9 +297,9 @@ public class dataDB {
    
     
    // debugged method
-   public ArrayList<PersoonBag> zoekAlleSpelers() throws DBException, ApplicationException {
+   public ArrayList<Persoon> zoekAlleSpelers() throws DBException, ApplicationException {
 
-      ArrayList<PersoonBag> kl = new ArrayList<>();
+      ArrayList<Persoon> kl = new ArrayList<>();
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager
               .getConnection();) {
@@ -315,7 +315,7 @@ public class dataDB {
                   
                   while (r.next()) {
 
-                     PersoonBag k = new PersoonBag();
+                     Persoon k = new Persoon();
                      k.setId(r.getInt("id"));
                      k.setNaam(r.getString("naam"));
                      k.setVoornaam(r.getString("voornaam"));
@@ -351,9 +351,9 @@ public class dataDB {
     *
     */
    
-   public ArrayList<PersoonBag> zoekSpelersPloeg(String ploegnaam) throws DBException,ApplicationException {
+   public ArrayList<Persoon> zoekSpelersPloeg(String ploegnaam) throws DBException,ApplicationException {
 
-      ArrayList<PersoonBag> kl = new ArrayList<>();
+      ArrayList<Persoon> kl = new ArrayList<>();
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
@@ -363,11 +363,11 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van alle spelers uit de database PersoonBag-objecten maken
+               // van alle spelers uit de database Persoon-objecten maken
              
 
                while (r.next()) {
-                  PersoonBag k = new PersoonBag();
+                  Persoon k = new Persoon();
                   k.setId(r.getInt("id"));
                   k.setNaam(r.getString("naam"));
                   k.setVoornaam(r.getString("voornaam"));
@@ -389,9 +389,9 @@ public class dataDB {
       }
    }
    
-   public ArrayList<PersoonBag> zoekSpelersPloeg(int id) throws DBException,ApplicationException {
+   public ArrayList<Persoon> zoekSpelersPloeg(int id) throws DBException,ApplicationException {
 
-      ArrayList<PersoonBag> kl = new ArrayList<>();
+      ArrayList<Persoon> kl = new ArrayList<>();
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
          // preparedStatement opstellen (en automtisch sluiten)
@@ -401,11 +401,11 @@ public class dataDB {
             stmt.execute();
             // result opvragen (en automatisch sluiten)
             try (ResultSet r = stmt.getResultSet()) {
-               // van alle spelers uit de database PloegBag-objecten maken
+               // van alle spelers uit de database Ploeg-objecten maken
           
 
                while (r.next()) {
-                  PersoonBag k = new PersoonBag();
+                  Persoon k = new Persoon();
                   k.setId(r.getInt("id"));
                   k.setNaam(r.getString("naam"));
                   k.setVoornaam(r.getString("voornaam"));
@@ -426,14 +426,14 @@ public class dataDB {
             "SQL-exception in zoekSpelersPloeg(int id) - connection"+ sqlEx);
       }
    }
-   public ArrayList<PersoonBag> zoekSpelersPloeg(PloegBag p) throws DBException,ApplicationException {
+   public ArrayList<Persoon> zoekSpelersPloeg(Ploeg p) throws DBException,ApplicationException {
 
-      ArrayList<PersoonBag> kl = zoekSpelersPloeg(p.getId());
+      ArrayList<Persoon> kl = zoekSpelersPloeg(p.getId());
       return kl;
       
    }
 
-   public PersoonBag getTrainer (int ploegid) throws DBException, ApplicationException
+   public Persoon getTrainer (int ploegid) throws DBException, ApplicationException
    {
         try (Connection conn = ConnectionManager.getConnection();) {
 
@@ -445,7 +445,7 @@ public class dataDB {
                stmt.execute();
                // result opvragen (en automatisch sluiten)
                try (ResultSet r = stmt.getResultSet()) {
-                  PersoonBag k = new PersoonBag();
+                  Persoon k = new Persoon();
                   while (r.next()) {
 
                      
@@ -478,12 +478,12 @@ public class dataDB {
       }
    }
    
-   public PersoonBag getTrainer (PloegBag p) throws DBException,ApplicationException
+   public Persoon getTrainer (Ploeg p) throws DBException,ApplicationException
    {
        return getTrainer(p.getId());
    }
    
-    public PersoonBag getTrainer (String ploegnaam) throws DBException, ApplicationException
+    public Persoon getTrainer (String ploegnaam) throws DBException, ApplicationException
    {
         try (Connection conn = ConnectionManager.getConnection();) {
 
@@ -495,7 +495,7 @@ public class dataDB {
                stmt.execute();
                // result opvragen (en automatisch sluiten)
                try (ResultSet r = stmt.getResultSet()) {
-                  PersoonBag k = new PersoonBag();
+                  Persoon k = new Persoon();
                   while (r.next()) {
 
                      
@@ -576,7 +576,7 @@ public class dataDB {
          // preparedStatement opstellen (en automtisch sluiten)
         
        
-              PersoonBag a =zoekPersoon(naam,voornaam);
+              Persoon a =zoekPersoon(naam,voornaam);
               verwijderPersoon(a);
           
           
@@ -587,11 +587,11 @@ public class dataDB {
       }
    }
 //   debugged method
-   public void verwijderPersoon(PersoonBag p) throws DBException, ApplicationException {
+   public void verwijderPersoon(Persoon p) throws DBException, ApplicationException {
        verwijderPersoon(p.getId());
    }
 //   debugged method
-   public void toevoegenPersoon(PersoonBag p) throws DBException {
+   public void toevoegenPersoon(Persoon p) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -617,7 +617,7 @@ public class dataDB {
    }
   
    //Ruben
-   public void toevoegenPloeg(PloegBag p) throws DBException {
+   public void toevoegenPloeg(Ploeg p) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -658,7 +658,7 @@ public class dataDB {
    }
 
    //Ruben
-   public void verwijderPloeg(PloegBag p) throws DBException {
+   public void verwijderPloeg(Ploeg p) throws DBException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -774,7 +774,7 @@ public class dataDB {
    }
    
    
-   public void toevoegenSpelerPloeg(int ploegid,PersoonBag p) throws DBException, ApplicationException
+   public void toevoegenSpelerPloeg(int ploegid,Persoon p) throws DBException, ApplicationException
    {
       
        // connectie tot stand brengen (en automatisch sluiten)
@@ -802,7 +802,7 @@ public class dataDB {
       }
    }
 //   debugged
-   public void toevoegenSpelerPloeg(String ploegnaam,PersoonBag p) throws DBException, ApplicationException
+   public void toevoegenSpelerPloeg(String ploegnaam,Persoon p) throws DBException, ApplicationException
    {
        // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -829,7 +829,7 @@ public class dataDB {
       }
    }
 //   debugged
-   public void toevoegenSpelerPloeg(PloegBag ploeg,PersoonBag speler) throws DBException,ApplicationException
+   public void toevoegenSpelerPloeg(Ploeg ploeg,Persoon speler) throws DBException,ApplicationException
    {
         ;
        toevoegenSpelerPloeg(ploeg.getId(),speler);
@@ -864,13 +864,13 @@ public class dataDB {
       }
    }
    
-   public void verwijderSpelerPloeg(PersoonBag p) throws DBException, ApplicationException {
+   public void verwijderSpelerPloeg(Persoon p) throws DBException, ApplicationException {
        verwijderSpelerPloeg(p.getId());
    }
    
    public void verwijderSpelerPloeg(String naam,String voornaam) throws DBException, ApplicationException {
 
-        PersoonBag p = zoekPersoon(naam,voornaam);
+        Persoon p = zoekPersoon(naam,voornaam);
         verwijderSpelerPloeg(p);
    }
    
@@ -902,7 +902,7 @@ public class dataDB {
       }
    }
    
-   public void toevoegenTrainerPloeg(PersoonBag persoon,PloegBag ploeg) throws DBException, ApplicationException
+   public void toevoegenTrainerPloeg(Persoon persoon,Ploeg ploeg) throws DBException, ApplicationException
    {
         // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -931,8 +931,8 @@ public class dataDB {
    }
    public void toevoegenTrainerPloeg(String naam, String voornaam,String ploegnaam) throws DBException, ApplicationException
    {
-      PersoonBag persoon =zoekPersoon(naam,voornaam);
-      PloegBag ploeg = zoekPloeg(ploegnaam);
+      Persoon persoon =zoekPersoon(naam,voornaam);
+      Ploeg ploeg = zoekPloeg(ploegnaam);
       toevoegenTrainerPloeg(persoon,ploeg);
    }
    
@@ -964,7 +964,7 @@ public class dataDB {
             "SQL-exception in verwijderTrainerPloeg(int ploegid) - connection"+ sqlEx);
       }
    }
-   public void verwijderTrainerPloeg(PloegBag p)throws DBException,ApplicationException
+   public void verwijderTrainerPloeg(Ploeg p)throws DBException,ApplicationException
    {
        verwijderTrainerPloeg(p.getId());
    }       
@@ -995,7 +995,7 @@ public class dataDB {
       }
    }
 //    debugged
-   public void wijzigenPersoon(PersoonBag p) throws DBException, ApplicationException {
+   public void wijzigenPersoon(Persoon p) throws DBException, ApplicationException {
 
       // connectie tot stand brengen (en automatisch sluiten)
       try (Connection conn = ConnectionManager.getConnection();) {
@@ -1124,9 +1124,9 @@ public class dataDB {
       }
    }
 //   debugged
-   public void wijzigenPersoon(String naam,String voornaam,PersoonBag p) throws DBException, ApplicationException {
+   public void wijzigenPersoon(String naam,String voornaam,Persoon p) throws DBException, ApplicationException {
 
-          PersoonBag a =zoekPersoon(naam,voornaam);
+          Persoon a =zoekPersoon(naam,voornaam);
           p.setId(a.getId());
           wijzigenPersoon(p);
          

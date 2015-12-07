@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package transactie;
-import datatype.Ploeg;
+import databag.Ploeg;
 
 
 /**

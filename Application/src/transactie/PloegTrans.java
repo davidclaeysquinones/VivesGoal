@@ -5,7 +5,7 @@
  */
 package transactie;
 
-import datatype.Ploeg;
+import databag.Ploeg;
 import database.dataDB;
 import exception.ApplicationException;
 
@@ -25,8 +25,8 @@ public class PloegTrans implements PloegTransInterface{
                 }
         else
         {
-            database.toevoegenPloeg(p.convertPloegToPloegBag());
-            return database.zoekPloeg(p.convertPloegToPloegBag()).getId();
+            database.toevoegenPloeg(p);
+            return database.zoekPloeg(p).getId();
         }
             
     }

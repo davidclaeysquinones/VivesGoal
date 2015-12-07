@@ -9,8 +9,8 @@ import exception.ApplicationException;
 import exception.DBException;
 import java.util.ArrayList;
 import datatype.Categorie;
-import databag.PersoonBag;
-import databag.PloegBag;
+import databag.Persoon;
+import databag.Ploeg;
 
 /**
  Main class to test the functions of the database
@@ -21,7 +21,7 @@ public class DBfuntionsTest {
         
        
    
-        PersoonBag een=new PersoonBag();
+        Persoon een=new Persoon();
         een.setVoornaam("David");
         een.setNaam("Claeys");
         try {
@@ -33,7 +33,7 @@ public class DBfuntionsTest {
         een.setTrainer(false);
       
         
-        PersoonBag twee=new PersoonBag();
+        Persoon twee=new Persoon();
         twee.setVoornaam("Cristina");
         twee.setNaam("Claeys");
         try {
@@ -43,7 +43,7 @@ public class DBfuntionsTest {
         }
         twee.setTrainer(false);
         
-        PersoonBag drie=new PersoonBag();
+        Persoon drie=new Persoon();
         drie.setVoornaam("Papi");
         drie.setNaam("Chulo");
         try {
@@ -53,7 +53,7 @@ public class DBfuntionsTest {
         }
         drie.setTrainer(true);
         
-        PersoonBag vier=new PersoonBag();
+        Persoon vier=new Persoon();
         vier.setVoornaam("Mami");
         vier.setNaam("Chula");
         try {
@@ -100,11 +100,11 @@ public class DBfuntionsTest {
         }
         
         
-        PloegBag ploeg=new PloegBag();
+        Ploeg ploeg=new Ploeg();
         ploeg.setNaam("los papis");
         ploeg.setCategorie(Categorie.U6);
         try{
-            PersoonBag p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
+            Persoon p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
             ploeg.setTrainer(p.getId());
             System.out.println("\n"+"instellen trainer"+"\n");
                   
@@ -128,7 +128,7 @@ public class DBfuntionsTest {
         
         try{
             database.toevoegenSpelerPloeg(database.zoekPloeg(ploeg.getNaam()),database.zoekPersoon(een.getNaam(), een.getVoornaam()));
-            PloegBag p=database.zoekPloeg(ploeg.getNaam());
+            Ploeg p=database.zoekPloeg(ploeg.getNaam());
             database.toevoegenSpelerPloeg(p,database.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
             System.out.println("toevoegen spelers aan ploeg"+"\n");
         }
@@ -177,7 +177,7 @@ public class DBfuntionsTest {
         } 
         
         try {
-            PloegBag p=database.zoekPloeg(ploeg.getNaam());
+            Ploeg p=database.zoekPloeg(ploeg.getNaam());
             System.out.println("opzoeken ploeg : "+p+"\n");
         }
         catch(DBException|ApplicationException e)
@@ -191,7 +191,7 @@ public class DBfuntionsTest {
         }
         
         try {
-            PersoonBag a = new PersoonBag();
+            Persoon a = new Persoon();
             a.setNaam("Mano");
             a.setVoornaam("Lito");
             database.wijzigenPersoon(een.getNaam(), een.getVoornaam(), a);
@@ -207,7 +207,7 @@ public class DBfuntionsTest {
         
         for(int i=0;i<speler.size();i++)
         {
-            PersoonBag a = (PersoonBag) speler.get(i);
+            Persoon a = (Persoon) speler.get(i);
             try{
             database.verwijderPersoon(a.getId());
             if(i==0)
@@ -226,7 +226,7 @@ public class DBfuntionsTest {
         
         for(int i=0;i<trainer.size();i++)
         {
-            PersoonBag a = (PersoonBag) trainer.get(i);
+            Persoon a = (Persoon) trainer.get(i);
             try{
             database.verwijderPersoon(a.getNaam(),a.getVoornaam());
             if(i==0)

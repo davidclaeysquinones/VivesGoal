@@ -5,7 +5,7 @@
  */
 package transactie;
 
-import datatype.Persoon;
+import databag.Persoon;
 
 /**
  *

@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 
-import databag.PersoonBag;
-import databag.PloegBag;
+import databag.Persoon;
+import databag.Ploeg;
 import database.dataDB;
 import datatype.Categorie;
 import exception.ApplicationException;
@@ -50,12 +50,12 @@ public class DbTest {
         
         for(int i = 0;i<spelers.size();i++)
         {
-            database.verwijderPersoon((PersoonBag) spelers.get(i));
+            database.verwijderPersoon((Persoon) spelers.get(i));
         }
         
         for(int i = 0;i<trainers.size();i++)
         {
-            database.verwijderPersoon((PersoonBag) trainers.get(i));
+            database.verwijderPersoon((Persoon) trainers.get(i));
         }
     }
 
@@ -68,26 +68,26 @@ public class DbTest {
     @Test
     public void ToevoegenPersonen() throws Exception
     {
-        PersoonBag een=new PersoonBag();
+        Persoon een=new Persoon();
         een.setVoornaam("David");
         een.setNaam("Claeys"); 
         een.setGeboortedatum(1995,4,13);      
         een.setTrainer(false);
       
         
-        PersoonBag twee=new PersoonBag();
+        Persoon twee=new Persoon();
         twee.setVoornaam("Cristina");
         twee.setNaam("Claeys");    
         twee.setGeboortedatum(1999,10,1);
         twee.setTrainer(false);
         
-        PersoonBag drie=new PersoonBag();
+        Persoon drie=new Persoon();
         drie.setVoornaam("Papi");
         drie.setNaam("Chulo");
         drie.setGeboortedatum(1989,8,1);
         drie.setTrainer(true);
         
-        PersoonBag vier=new PersoonBag();
+        Persoon vier=new Persoon();
         vier.setVoornaam("Mami");
         vier.setNaam("Chula");
         vier.setGeboortedatum(1979,6,2);
@@ -144,7 +144,7 @@ public class DbTest {
     public void toevoegenPloegMetTrainer() throws Exception
     {
         
-        PersoonBag drie=new PersoonBag();
+        Persoon drie=new Persoon();
         drie.setVoornaam("Marnisito");
         drie.setNaam("Chulo");
         
@@ -154,11 +154,11 @@ public class DbTest {
         
         database.toevoegenPersoon(drie);
         
-        PloegBag ploeg=new PloegBag();
+        Ploeg ploeg=new Ploeg();
         ploeg.setNaam("los papis");
         ploeg.setCategorie(Categorie.U6);
         
-        PersoonBag p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
+        Persoon p = database.zoekPersoon(drie.getNaam(),drie.getVoornaam());
         ploeg.setTrainer(p.getId());
          
          database.toevoegenPloeg(ploeg); 
@@ -169,7 +169,7 @@ public class DbTest {
     @Test
     public void toevoegenPloeg() throws Exception
     {
-        PloegBag ploeg=new PloegBag();
+        Ploeg ploeg=new Ploeg();
         ploeg.setNaam("los papasitos");
         ploeg.setCategorie(Categorie.U6);
        
@@ -181,11 +181,11 @@ public class DbTest {
     @Test
     public void koppelenTrainerAanPloeg() throws Exception
     {
-        PloegBag ploeg = new PloegBag();
+        Ploeg ploeg = new Ploeg();
         ploeg.setCategorie(Categorie.U7);
         ploeg.setNaam("los chungitos");
         database.toevoegenPloeg(ploeg);
-        PersoonBag drie=new PersoonBag();
+        Persoon drie=new Persoon();
         drie.setVoornaam("Rubensito");
         drie.setNaam("Chulito");
         
@@ -205,13 +205,13 @@ public class DbTest {
     @Test
     public void koppelenSpeler() throws Exception
     {
-        PersoonBag een=new PersoonBag();
+        Persoon een=new Persoon();
         een.setVoornaam("Davisito");
         een.setNaam("Claesito");
         een.setGeboortedatum(1960, 4, 12);
        
    
-        PersoonBag twee=new PersoonBag();
+        Persoon twee=new Persoon();
         twee.setVoornaam("Cristinita");
         twee.setNaam("Claesita");
         twee.setGeboortedatum(1966, 5, 12);
@@ -220,7 +220,7 @@ public class DbTest {
         database.toevoegenPersoon(twee);
      
         
-        PloegBag ploeg=new PloegBag();
+        Ploeg ploeg=new Ploeg();
         ploeg.setNaam("markisito");
         ploeg.setCategorie(Categorie.U11);
         
@@ -236,7 +236,7 @@ public class DbTest {
     @Test 
     public void ontkoppelenSpeler() throws Exception
     {
-        PersoonBag een=new PersoonBag();
+        Persoon een=new Persoon();
         een.setVoornaam("stevisito");
         een.setNaam("rikisito");      
         een.setGeboortedatum(1995,4,13);
@@ -246,7 +246,7 @@ public class DbTest {
        
        
         
-        PloegBag ploeg = new PloegBag();
+        Ploeg ploeg = new Ploeg();
         ploeg.setNaam("apllesito");
         ploeg.setCategorie(Categorie.U8);
         
@@ -268,12 +268,12 @@ public class DbTest {
         
         for(int i = 0;i<spelers.size();i++)
         {
-            database.verwijderPersoon((PersoonBag) spelers.get(i));
+            database.verwijderPersoon((Persoon) spelers.get(i));
         }
         
         for(int i = 0;i<trainers.size();i++)
         {
-            database.verwijderPersoon((PersoonBag) trainers.get(i));
+            database.verwijderPersoon((Persoon) trainers.get(i));
         }
     }
     
