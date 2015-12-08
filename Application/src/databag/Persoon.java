@@ -80,10 +80,10 @@ public class Persoon {
      * @throws ApplicationException 
      */
 
-    public void setGeboortedatum(int jaar,int maand,int dag) throws ApplicationException{
-       Date current = new Date(System.currentTimeMillis());
+    public void setGeboortedatum(int jaar,int maand,int dag) throws ApplicationException{     
        Calendar c=Calendar.getInstance();
        c.add(Calendar.MILLISECOND,86400000);
+       Date current = new Date(c.getTimeInMillis());
        c.set(jaar,maand-1,dag);   
        Date d=new Date(c.getTimeInMillis()) ;
         if(jaar>=0 && maand <=12 && maand>0 && dag<=31 && current.after(d))

@@ -24,7 +24,53 @@ public class PersoonDB {
         
     }
     
-    
+    public ArrayList<Persoon> zoekAllePersonen() throws DBException, ApplicationException
+    {
+         ArrayList<Persoon> kl = new ArrayList<>();
+      // connectie tot stand brengen (en automatisch sluiten)
+      try (Connection conn = ConnectionManager
+              .getConnection();) {
+
+         // preparedStatement opstellen (en automtisch sluiten)
+         try (PreparedStatement stmt = conn.
+            prepareStatement(
+               "select id, naam, voornaam, geboortedatum,isTrainer,opmerking from persoon order by naam, voornaam");) {
+               // execute voert elke sql-statement uit, executeQuery enkel de eenvoudige
+               stmt.execute();
+               // result opvragen (en automatisch sluiten)
+               try (ResultSet r = stmt.getResultSet()) {
+                  
+                  while (r.next()) {
+
+                     Persoon k = new Persoon();
+                     k.setId(r.getInt("id"));
+                     k.setNaam(r.getString("naam"));
+                     k.setVoornaam(r.getString("voornaam"));
+                     k.setGeboortedatum(r.getDate("geboortedatum"));
+                     k.setTrainer(r.getBoolean("isTrainer"));
+                     k.setOpmerking(r.getString("opmerking"));
+                     kl.add(k);
+                  }
+                  
+               }catch(NullPointerException e)
+               {
+                   throw new ApplicationException("Er werden geen personen gevonden");
+               }
+               
+               catch (SQLException sqlEx) {
+                  throw new DBException(
+                     "SQL-exception in zoekAlleTrainers - resultset"+ sqlEx);
+               }
+            } catch (SQLException sqlEx) {
+               throw new DBException(
+                  "SQL-exception in zoekAlleTrainers - statement"+ sqlEx);
+            }
+      } catch (SQLException sqlEx) {
+         throw new DBException(
+            "SQL-exception in zoekAlleTrainers - connection"+ sqlEx);
+      }
+      return kl;
+    }
    public Persoon zoekPersoon(int id) throws DBException, ApplicationException {
       Persoon returnPersoon = null;
       // connectie tot stand brengen (en automatisch sluiten)

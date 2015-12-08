@@ -19,26 +19,30 @@ public class PloegTrans implements PloegTransInterface{
    private PloegDB database = new PloegDB();
     @Override
     public Integer ploegToevoegen(Ploeg p) throws Exception {
-        if(database.zoekPloeg(p.getNaam())!=null)
-                {
-                    throw new ApplicationException("Deze ploeg bestaat al");
-                }
-        if(p.getCategorie()==null)
-        {
-            throw new ApplicationException("Elke ploeg moet een categorie hebben");
-        }   
-    
-        else
-        {
-            database.toevoegenPloeg(p);
-            return database.zoekPloeg(p).getId();
-        }
-            
+       
+           if(database.zoekPloeg(p.getNaam())!=null)
+           {
+               throw new ApplicationException("Deze ploeg bestaat al");
+           }
+            else
+           {
+               if(p.getCategorie()==null)
+            {
+                throw new ApplicationException("Elke ploeg moet een categorie hebben");
+            }   
+            else
+            {
+                database.toevoegenPloeg(p);
+                return database.zoekPloeg(p.getNaam()).getId();
+            }
+           }
+        
     }
 
     @Override
     public void trainerVerwijderenVanPloeg(int ploegId) throws Exception {
-        database.verwijderPloeg(ploegId);
+        database.verwijderTrainerPloeg(ploegId);
+             
     }
 
     @Override

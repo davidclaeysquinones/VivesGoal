@@ -59,7 +59,7 @@ public class Ploeg {
         }
         catch (IllegalArgumentException e) 
         {
-            throw new ApplicationException("Geen geldige status voor Klant");
+            throw new ApplicationException("Geen geldige categorie voor de ploeg");
         }
     }
     

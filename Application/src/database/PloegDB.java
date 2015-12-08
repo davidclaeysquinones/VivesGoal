@@ -501,7 +501,7 @@ public class PloegDB {
    }
    
    
-   public void toevoegenSpelerPloeg(int ploegid,Persoon p) throws DBException, ApplicationException
+   public void toevoegenSpelerPloeg(int ploegid,int persoonid) throws DBException, ApplicationException
    {
       
        // connectie tot stand brengen (en automatisch sluiten)
@@ -510,7 +510,7 @@ public class PloegDB {
          try (PreparedStatement stmt = conn.prepareStatement(
             "update persoon set ploeg_id=? where id=?;");) {         
             stmt.setInt(1, ploegid);
-            stmt.setInt(2, p.getId());
+            stmt.setInt(2, persoonid);
             
             stmt.execute();
 
@@ -559,7 +559,7 @@ public class PloegDB {
    public void toevoegenSpelerPloeg(Ploeg ploeg,Persoon speler) throws DBException,ApplicationException
    {
         
-       toevoegenSpelerPloeg(ploeg.getId(),speler);
+       toevoegenSpelerPloeg(ploeg.getId(),speler.getId());
    }
    
    public void verwijderSpelerPloeg(int id) throws DBException, ApplicationException {
