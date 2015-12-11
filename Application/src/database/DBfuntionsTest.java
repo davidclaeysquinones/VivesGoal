@@ -11,13 +11,15 @@ import java.util.ArrayList;
 import datatype.Categorie;
 import databag.Persoon;
 import databag.Ploeg;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  Main class to test the functions of the database
  */
 public class DBfuntionsTest {
    
-    public static void main(String args[]) {
+    public static void main(String args[]) throws ApplicationException {
         
        
    
@@ -65,6 +67,7 @@ public class DBfuntionsTest {
         
         ArrayList speler=new ArrayList();
         ArrayList trainer=new ArrayList();
+        ArrayList personen=new ArrayList();
         PloegDB ploegDB = new PloegDB();
         PersoonDB persoonDB = new PersoonDB();
         
@@ -81,6 +84,7 @@ public class DBfuntionsTest {
         }
         
         try{
+            personen=persoonDB.zoekAllePersonen();
             speler=persoonDB.zoekAlleSpelers();
             trainer=persoonDB.zoekAlleTrainers();
             System.out.println("Spelers en trainers opslaan in apparte ArrayList"+"\n");
@@ -102,7 +106,7 @@ public class DBfuntionsTest {
         
         
         Ploeg ploeg=new Ploeg();
-        ploeg.setNaam("los papis");
+        ploeg.setNaam("los chungos");
         ploeg.setCategorie(Categorie.U6);
         try{
             Persoon p = persoonDB.zoekPersoon(drie.getNaam(),drie.getVoornaam());
@@ -130,7 +134,7 @@ public class DBfuntionsTest {
         try{
            ploegDB.toevoegenSpelerPloeg(ploegDB.zoekPloeg(ploeg.getNaam()),persoonDB.zoekPersoon(een.getNaam(), een.getVoornaam()));
             Ploeg p=ploegDB.zoekPloeg(ploeg.getNaam());
-            ploegDB.toevoegenSpelerPloeg(p,persoonDB.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
+            ploegDB.toevoegenSpelerPloeg(ploegDB.zoekPloeg(ploeg.getNaam()),persoonDB.zoekPersoon(twee.getNaam(),twee.getVoornaam()) );
             System.out.println("toevoegen spelers aan ploeg"+"\n");
         }
         catch ( DBException|ApplicationException e)
@@ -227,9 +231,10 @@ public class DBfuntionsTest {
         
         for(int i=0;i<trainer.size();i++)
         {
-            Persoon a = (Persoon) trainer.get(i);
+           
             try{
-            persoonDB.verwijderPersoon(a.getNaam(),a.getVoornaam());
+            Persoon a=(Persoon)trainer.get(i);    
+            persoonDB.verwijderPersoon(a);
             if(i==0)
             {
                 System.out.println("verwijderen trainers"+"\n");
@@ -242,17 +247,22 @@ public class DBfuntionsTest {
         }
         }
        
-      
-        
-        
+        try {
+            System.out.println(ploegDB.zoekPloegenCategorie(Categorie.U6).size());
+        }
+        catch (DBException ex) {
+            Logger.getLogger(DBfuntionsTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
         try{
             ploegDB.verwijderAllePloegen();
             System.out.println("Alle ploegen verwijderen");
         }
         catch ( DBException e)
         {
-            System.out.println("fout bij verwijderen trainer"+e.getMessage());
+            System.out.println("fout bij verwijderen ploegen"+e.getMessage());
         }
+        
         
      
     }

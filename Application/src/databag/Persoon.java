@@ -14,7 +14,8 @@ import java.util.Date;
  * @author david
  */
 public class Persoon {
-    private int id;
+
+    private Integer id;
     private String naam;
     private String voornaam;
     private Date geboortedatum;
@@ -22,18 +23,14 @@ public class Persoon {
     private String opmerking;
     private Integer ploegid;
 
-    public Integer getPloegid() {
-        return ploegid;
-    }
-
-    public void setPloegid(Integer ploegid) {
-        this.ploegid = ploegid;
-    }
-    
-
     // defaultconstructor
     // getters
-    public int getId() {
+    /**
+     * Integer datatype omdat bij aanmaak het id standaard null is
+     *
+     * @return
+     */
+    public Integer getId() {
         return id;
     }
 
@@ -48,9 +45,11 @@ public class Persoon {
     public Date getGeboortedatum() {
         return geboortedatum;
     }
+
     public boolean getTrainer() {
         return trainer;
     }
+
     public String getOpmerking() {
         return opmerking;
     }
@@ -71,40 +70,46 @@ public class Persoon {
     public void setGeboortedatum(Date geboortedatum) {
         this.geboortedatum = geboortedatum;
     }
+
     /**
-     * 
+     *
      * @param jaar
-     * @param maand 
-     * @param dag
-     * setGeboortedatum(2016,1,1) stelt de datum in op 1 januari 2016
-     * @throws ApplicationException 
+     * @param maand
+     * @param dag setGeboortedatum(2016,1,1) stelt de datum in op 1 januari 2016
+     * @throws ApplicationException
      */
 
-    public void setGeboortedatum(int jaar,int maand,int dag) throws ApplicationException{     
-       Calendar c=Calendar.getInstance();
-       c.add(Calendar.MILLISECOND,86400000);
-       Date current = new Date(c.getTimeInMillis());
-       c.set(jaar,maand-1,dag);   
-       Date d=new Date(c.getTimeInMillis()) ;
-        if(jaar>=0 && maand <=12 && maand>0 && dag<=31 && current.after(d))
-        {           
-            geboortedatum =d;
-        }
-        else
-        {
+    public void setGeboortedatum(int jaar, int maand, int dag) throws ApplicationException {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MILLISECOND, 86400000);
+        Date current = new Date(c.getTimeInMillis());
+        c.set(jaar, maand - 1, dag);
+        Date d = new Date(c.getTimeInMillis());
+        if (jaar >= 0 && maand <= 12 && maand > 0 && dag <= 31 && current.after(d)) {
+            geboortedatum = d;
+        } else {
             throw new ApplicationException("De opgegeven datum heeft een verkeerd formaat");
         }
-               
+
     }
 
     public void setTrainer(boolean trainer) {
         this.trainer = trainer;
     }
+
     public void setOpmerking(String opmerking) {
-        this.opmerking=opmerking;
+        this.opmerking = opmerking;
     }
 
-@Override
+    public Integer getPloegid() {
+        return ploegid;
+    }
+
+    public void setPloegid(Integer ploegid) {
+        this.ploegid = ploegid;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(voornaam).append(" ").
