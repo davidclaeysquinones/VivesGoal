@@ -156,11 +156,10 @@ public class PersoonDB {
     }
 
     public Persoon zoekPersoon(Persoon p) throws DBException, ApplicationException {
-        Persoon a = zoekPersoon(p.getNaam(),p.getVoornaam());
+        Persoon a = zoekPersoon(p.getNaam(), p.getVoornaam());
         return a;
     }
-    
-    
+
     // debugged method
     public ArrayList<Persoon> zoekAlleTrainers() throws DBException, ApplicationException {
 
@@ -283,7 +282,6 @@ public class PersoonDB {
     }
 
     //   debugged method
-
     public void verwijderPersoon(int id) throws DBException, ApplicationException {
 
         // connectie tot stand brengen (en automatisch sluiten)
@@ -322,15 +320,14 @@ public class PersoonDB {
 
     public void verwijderPersoon(String naam, String voornaam) throws DBException, ApplicationException {
 
-            Persoon a = zoekPersoon(naam, voornaam);
-            verwijderPersoon(a.getId());
+        Persoon a = zoekPersoon(naam, voornaam);
+        verwijderPersoon(a.getId());
 
-      
     }
 //   debugged method
 
     public void verwijderPersoon(Persoon p) throws DBException, ApplicationException {
-        verwijderPersoon(p.getNaam(),p.getVoornaam());
+        verwijderPersoon(p.getNaam(), p.getVoornaam());
     }
 
     //   debugged method
@@ -503,6 +500,34 @@ public class PersoonDB {
         p.setId(a.getId());
         wijzigenPersoon(p);
 
+    }
+
+    public boolean bestaatPersoon(int id) throws DBException, ApplicationException {
+        // connectie tot stand brengen (en automatisch sluiten)
+        try (Connection conn = ConnectionManager.getConnection();) {
+            // preparedStatement opstellen (en automtisch sluiten)
+
+            try (PreparedStatement stmt = conn.prepareStatement(
+                    "select * from persoon where id=?");) {
+                stmt.setInt(1, id);
+                stmt.execute();
+
+                ResultSet r = stmt.getResultSet();
+                if (r.next() != false) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (NullPointerException e) {
+                throw new ApplicationException("De opgegeven persoon werd niet gevonden");
+            } catch (SQLException sqlEx) {
+                throw new DBException("SQL-exception in bestaatPersoon(Persoon p) - statement" + sqlEx);
+            }
+
+        } catch (SQLException sqlEx) {
+            throw new DBException(
+                    "SQL-exception in bestaatPersoon(Persoon p) - connection" + sqlEx);
+        }
     }
 
 }

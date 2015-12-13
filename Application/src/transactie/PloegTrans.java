@@ -10,10 +10,8 @@ import databag.Ploeg;
 import database.PersoonDB;
 import database.PloegDB;
 import exception.ApplicationException;
-import exception.DBException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  *
@@ -29,24 +27,31 @@ public class PloegTrans implements PloegTransInterface {
         if (p.getCategorie() == null) {
             throw new ApplicationException("Elke ploeg moet een categorie hebben");
         } else {
+            String ploegnaam = genereerPloegNaam(p);
+
             if (p.getTrainer() != null) {
                 PersoonDB persoonDB = new PersoonDB();
-                if (persoonDB.zoekPersoon(p.getTrainer()) != null) {
-                    String ploegnaam = genereerPloegNaam(p);
+                if (persoonDB.bestaatPersoon(p.getTrainer()) == false) {
+                    throw new ApplicationException("De trainer bestaat niet");
+
+                } else {
                     p.setNaam(ploegnaam);
                     database.toevoegenPloeg(p);
-                    return database.zoekPloeg(p.getNaam()).getId();
-                } else {
-                    return null;
+
+                    return database.zoekPloeg(p).getId();
                 }
             } else {
-                String ploegnaam = genereerPloegNaam(p);
+                System.out.println(p.getTrainer() != null);
+                System.out.println(ploegnaam);
                 p.setNaam(ploegnaam);
                 database.toevoegenPloeg(p);
-                return database.zoekPloeg(p.getNaam()).getId();
+
+                return database.zoekPloeg(p).getId();
+
             }
 
         }
+
     }
 
     @Override
@@ -60,7 +65,7 @@ public class PloegTrans implements PloegTransInterface {
         database.toevoegenTrainerPloeg(trainerId, ploegId);
     }
 
-    public boolean ploegVerwijderen(Ploeg p) throws Exception {
+    public void ploegVerwijderen(Ploeg p) throws Exception {
 
         ArrayList<Ploeg> ploegen = database.zoekPloegenCategorie(p.getCategorie());
 
@@ -80,10 +85,13 @@ public class PloegTrans implements PloegTransInterface {
         }
         ploegen.remove(p);
         a.keySet().remove(p);
+        b.keySet().remove(p);
+
+        for (Ploeg current : ploegen) {
+            ploegToevoegen(current);
+        }
 
         for (Ploeg current : a.keySet()) {
-            current.setNaam(genereerPloegNaam(current));
-            database.toevoegenPloeg(current);
             ArrayList<Persoon> spelers = a.get(current);
             for (int j = 0; j < spelers.size(); j++) {
                 database.toevoegenSpelerPloeg(current, spelers.get(j));
@@ -94,17 +102,14 @@ public class PloegTrans implements PloegTransInterface {
             database.toevoegenTrainerPloeg(b.get(current), current);
         }
 
-        return true;
-
     }
 
-    private String genereerPloegNaam(Ploeg p) throws Exception {
+    public String genereerPloegNaam(Ploeg p) throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append(p.getCategorie().getTekst());
-        int aantal = database.zoekPloegenCategorie(p.getCategorie()).size() + 97;
-        sb.append(Character.toString((char) aantal));
+        int aantal = database.zoekPloegenCategorie(p.getCategorie()).size();
+        sb.append(Character.toString((char) ((char) aantal + 97)));
         return sb.toString();
 
     }
-
 }
