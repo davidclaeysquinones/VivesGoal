@@ -8,6 +8,7 @@ package databag;
 import exception.ApplicationException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -72,10 +73,12 @@ public class Persoon {
     }
 
     /**
-     *
+     * setGeboortedatum(2016,1,1) stelt de datum in op 1 januari 2016
+     * 
      * @param jaar
      * @param maand
-     * @param dag setGeboortedatum(2016,1,1) stelt de datum in op 1 januari 2016
+     * @param dag 
+
      * @throws ApplicationException
      */
 
@@ -116,4 +119,38 @@ public class Persoon {
                 append(naam).append(" ");
         return sb.toString();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else {
+            if (obj.getClass() != Persoon.class) {
+                return false;
+            } else {
+                if (obj == this) {
+                    return true;
+                } else {
+                    Persoon p = (Persoon) obj;
+                    if (p.getNaam().equals(this.naam) && p.getVoornaam().equals(this.voornaam) && p.getGeboortedatum().equals(this.geboortedatum)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 23 * hash + Objects.hashCode(this.naam);
+        hash = 23 * hash + Objects.hashCode(this.voornaam);
+        hash = 23 * hash + Objects.hashCode(this.geboortedatum);
+        return hash;
+    }
+
+   
 }

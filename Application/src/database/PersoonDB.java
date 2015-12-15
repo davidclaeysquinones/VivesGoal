@@ -92,7 +92,15 @@ public class PersoonDB {
                         k.setGeboortedatum(r.getDate("geboortedatum"));
                         k.setTrainer(r.getBoolean("isTrainer"));
                         k.setOpmerking(r.getString("opmerking"));
-                        k.setPloegid(r.getInt("ploeg_id"));
+                        if(r.getObject("ploeg_id")==null)
+                        {
+                            k.setPloegid(null);
+                        }
+                        else
+                        {
+                            k.setPloegid(r.getInt("ploeg_id"));
+                        }
+                        
                         returnPersoon = k;
                     }
 
@@ -136,7 +144,14 @@ public class PersoonDB {
                         k.setGeboortedatum(r.getDate("geboortedatum"));
                         k.setTrainer(r.getBoolean("isTrainer"));
                         k.setOpmerking(r.getString("opmerking"));
-                        k.setPloegid(r.getInt("ploeg_id"));
+                        if(r.getObject("ploeg_id")==null)
+                        {
+                            k.setPloegid(null);
+                        }
+                        else
+                        {
+                            k.setPloegid(r.getInt("ploeg_id"));
+                        }
                         returnPersoon = k;
                     }
 

@@ -41,8 +41,7 @@ public class PloegTrans implements PloegTransInterface {
                     return database.zoekPloeg(p).getId();
                 }
             } else {
-                System.out.println(p.getTrainer() != null);
-                System.out.println(ploegnaam);
+
                 p.setNaam(ploegnaam);
                 database.toevoegenPloeg(p);
 
@@ -62,54 +61,104 @@ public class PloegTrans implements PloegTransInterface {
 
     @Override
     public void trainerKoppelenAanPloeg(int trainerId, int ploegId) throws Exception {
-        database.toevoegenTrainerPloeg(trainerId, ploegId);
+        PersoonDB a = new PersoonDB();
+        Persoon p = a.zoekPersoon(trainerId);
+        if (p != null && p.getTrainer() == true) {
+            database.toevoegenTrainerPloeg(trainerId, ploegId);
+        } else {
+            throw new ApplicationException("De opgegeven persoon bestaat niet of is geen trainer");
+        }
+
     }
 
+    /**
+     * 
+     * @param p de ploeg die verwijderd moet worden ( naam en categorie mogen niet null zijn)
+     * @throws Exception 
+     */
     public void ploegVerwijderen(Ploeg p) throws Exception {
+//      ArrayList met alle ploegen binnen dezelfde categorie
+        ArrayList<Ploeg> ploegen;
+        ploegen = database.zoekPloegenCategorie(p.getCategorie());
 
-        ArrayList<Ploeg> ploegen = database.zoekPloegenCategorie(p.getCategorie());
+//      HashMap die later de spelers per ploeg zal bijhouden
+        HashMap<Ploeg, ArrayList<Persoon>> spelerslijst = new HashMap<>();
 
-        HashMap<Ploeg, ArrayList<Persoon>> a = new HashMap<>();
-        HashMap<Ploeg, Persoon> b = new HashMap<>();
-
+//      Toevoegen van spelers aan HashMap
         for (int i = 0; i < ploegen.size(); i++) {
-            a.put(ploegen.get(i), database.zoekSpelersPloeg(ploegen.get(i)));
+            spelerslijst.put(ploegen.get(i), database.zoekSpelersPloeg(ploegen.get(i)));
         }
 
-        for (int i = 0; i < ploegen.size(); i++) {
-            b.put(ploegen.get(i), database.getTrainer(ploegen.get(i)));
-        }
-
+//      Alle ploegen binnen dezelfde categorie als ploeg p verwijderen van de database
         for (int i = 0; i < ploegen.size(); i++) {
             database.verwijderPloeg(ploegen.get(i));
         }
+//      Ploeg p van de ArrayList met ploegen verwijderen
         ploegen.remove(p);
-        a.keySet().remove(p);
-        b.keySet().remove(p);
+//      De entry met de spelers van ploeg p van de HashMap verwijderen
+        spelerslijst.keySet().remove(p);
 
+//        Overlopen van alle overgebleven ploegen
         for (Ploeg current : ploegen) {
-            ploegToevoegen(current);
+//          Spelers van ploeg current toewijzen aan ArrayList
+            ArrayList<Persoon> a = spelerslijst.get(current);
+//          Ploeg current verwijderen van de HashMap 
+//          (dit is nodig omdat later de naam opnieuw wordt gegenereerd)
+            spelerslijst.keySet().remove(current);
+//          de nieuwe id van de huidige ploeg bijhouden
+            Integer i = ploegToevoegen(current);
+//          ploegobject opvragen aan de database met nieuwe gegenereerde gegevens
+            Ploeg nieuw = database.zoekPloeg(i);
+//          De lijst van spelers terug koppelen aan de ploeg
+            spelerslijst.put(nieuw, a);
         }
 
-        for (Ploeg current : a.keySet()) {
-            ArrayList<Persoon> spelers = a.get(current);
-            for (int j = 0; j < spelers.size(); j++) {
-                database.toevoegenSpelerPloeg(current, spelers.get(j));
+//        Alle entries in HashMap overlopen
+        for (Ploeg current : spelerslijst.keySet()) {
+//            ArrayList met alle spelers van de ploeg
+            ArrayList<Persoon> spelers = spelerslijst.get(current);
+
+//          indien de ploeg geen spelers heeft zal ArrayList spelers null zijn
+            if (spelers != null) {
+//                overlopen van alle spelers van de ploeg
+                for (Persoon speler : spelers) {
+//                    speler koppelen aan ploeg
+                    database.toevoegenSpelerPloeg(current.getId(), speler.getId());
+                }
             }
-        }
 
-        for (Ploeg current : b.keySet()) {
-            database.toevoegenTrainerPloeg(b.get(current), current);
         }
 
     }
 
-    public String genereerPloegNaam(Ploeg p) throws Exception {
+    private String genereerPloegNaam(Ploeg p) throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append(p.getCategorie().getTekst());
+//        aantal ploegen binnen de categorie
         int aantal = database.zoekPloegenCategorie(p.getCategorie()).size();
+//        letter aan StringBuilder afhankelijk van het aantal ploegen binnen de categorie
         sb.append(Character.toString((char) ((char) aantal + 97)));
         return sb.toString();
 
     }
+
+    private String genereerPloegNaamOneindig(Ploeg p) throws Exception {
+        StringBuilder sb = new StringBuilder();
+
+        int aantal = database.zoekPloegenCategorie(p.getCategorie()).size() + 1; //26 + 96 / 2+ 96
+        int a = aantal;
+        while (a > 26) {
+            int r = a % 27; //28%27 = 1
+            r += 97; // 1+97=b
+            sb.insert(0, Character.toString((char) r)); //b
+            a = a / 27;  //28/27=1         
+        }
+        int b = a;
+        b += 96; //97 = a
+        sb.insert(0, Character.toString((char) b));
+        sb.insert(0, p.getCategorie().getTekst());
+
+        return sb.toString();
+    }
+
 }

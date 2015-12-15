@@ -43,20 +43,21 @@ public class PloegTransTest {
     }
 
     @After
-    public void tearDown() {        PloegDB ploeg = new PloegDB();
-        try {
-            ploeg.verwijderAllePloegen();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        PersoonDB persoon = new PersoonDB();
-
-        try {
-            persoon.verwijderAllePersonen();
-        } catch (DBException ex) {
-            System.out.println(ex.getMessage());
-        }
+    public void tearDown() {
+//        PloegDB ploeg = new PloegDB();
+//        try {
+//            ploeg.verwijderAllePloegen();
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//
+//        PersoonDB persoon = new PersoonDB();
+//
+//        try {
+//            persoon.verwijderAllePersonen();
+//        } catch (DBException ex) {
+//            System.out.println(ex.getMessage());
+//        }
 
     }
 
@@ -81,6 +82,7 @@ public class PloegTransTest {
         a.setNaam("Claeys");
         a.setVoornaam("David");
         a.setGeboortedatum(1995, 4, 13);
+        a.setTrainer(true);
         personen.toevoegenPersoon(a);
         Ploeg p = new Ploeg();
         p.setNaam("dinsdag");
@@ -98,6 +100,7 @@ public class PloegTransTest {
         Persoon a = new Persoon();
         a.setNaam("Claeys");
         a.setVoornaam("Cristina");
+        a.setTrainer(true);
         a.setGeboortedatum(1999, 10, 1);
         personen.toevoegenPersoon(a);
         Ploeg p = new Ploeg();
@@ -115,17 +118,14 @@ public class PloegTransTest {
         Ploeg p1 = new Ploeg();
         p1.setNaam("U11a");
         p1.setCategorie(Categorie.U11);
-        
 
         Ploeg p2 = new Ploeg();
         p2.setNaam("U11b");
         p2.setCategorie(Categorie.U11);
-       
 
         Ploeg p3 = new Ploeg();
         p3.setNaam("U11c");
         p3.setCategorie(Categorie.U11);
-       
 
         transactie.ploegToevoegen(p1);
         transactie.ploegToevoegen(p2);
@@ -135,8 +135,51 @@ public class PloegTransTest {
 
     }
     
+    @Test
+    public void verwijderPloegMetSpelers()throws Exception
+    {
+        Ploeg p1 = new Ploeg();
+        p1.setNaam("U7a");
+        p1.setCategorie(Categorie.U7);
 
-    
+        Ploeg p2 = new Ploeg();
+        p2.setNaam("U7b");
+        p2.setCategorie(Categorie.U7);
 
+        Ploeg p3 = new Ploeg();
+        p3.setNaam("U7c");
+        p3.setCategorie(Categorie.U7);
+
+        transactie.ploegToevoegen(p1);
+        transactie.ploegToevoegen(p2);
+        transactie.ploegToevoegen(p3);
+        
+        Persoon speler1 = new Persoon();
+        speler1.setNaam("1");
+        speler1.setVoornaam("1");
+        speler1.setGeboortedatum(1995,04,13);
+        
+        Persoon speler2 = new Persoon();
+        speler2.setNaam("2");
+        speler2.setVoornaam("2");
+        speler2.setGeboortedatum(1995,04,13);
+        
+        Persoon speler3 = new Persoon();
+        speler3.setNaam("3");
+        speler3.setVoornaam("3");
+        speler3.setGeboortedatum(1995,04,13);
+        
+        PersoonDB a =new PersoonDB();
+        a.toevoegenPersoon(speler1);
+        a.toevoegenPersoon(speler2);
+        a.toevoegenPersoon(speler3);
+        
+        PloegDB b = new PloegDB();
+        b.toevoegenSpelerPloeg(p1, speler1);
+        b.toevoegenSpelerPloeg(p2, speler2);
+        b.toevoegenSpelerPloeg(p3, speler3);
+
+        transactie.ploegVerwijderen(p2);
+    }
 
 }
